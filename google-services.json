@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "934450097517",
+    "firebase_url": "https://christian-rock-default-rtdb.firebaseio.com",
+    "project_id": "christian-rock",
+    "storage_bucket": "christian-rock.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934450097517:android:6ea4d5b8e3e32d9d7a7e64",
+        "android_client_info": {
+          "package_name": "com.christianradio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934450097517-cj10e0j3d0sq2ql83p5r3s0a0lucsbuo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.christianradio",
+            "certificate_hash": "833a8d9c727d75dc049e2084476c94a1a99337d8"
+          }
+        },
+        {
+          "client_id": "934450097517-1gcviqajh364o46qbjmtktbtiqqrdrtq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUt8mXTQiT0-KZjeayjjfsjsoA1z7kClw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934450097517-1gcviqajh364o46qbjmtktbtiqqrdrtq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

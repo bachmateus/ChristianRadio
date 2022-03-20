@@ -10,8 +10,13 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-google-signin/google-signin": "^7.2.1",
+    "babel-plugin-inline-dotenv": "^1.6.0",
+    "dotenv": "^16.0.0",
     "expo": "~44.0.0",
+    "expo-auth-session": "~3.5.0",
     "expo-google-sign-in": "~10.1.0",
+    "expo-random": "~12.1.1",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
