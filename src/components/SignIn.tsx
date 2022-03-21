@@ -1,9 +1,12 @@
+import { FC } from "react";
 import { Button, View } from "react-native";
 import * as AuthSession from 'expo-auth-session';
+import { connect } from "react-redux";
+
+import { setUserData } from "../reducers/userReducer/actions";
 
 const { GOOGLE_CLIENT_ID } = process.env;
 const { GOOGLE_REDIRECT_URI } = process.env;
-const { SPOTIFY_CLIENT_ID } = process.env;
 
 type AuthResponse = {
   type: string;
@@ -23,9 +26,27 @@ type UserProfileResponse = {
   verified_email: boolean,
 }
 
-export default function SignIn() {
+interface Props {
+  setUserData: Function
+}
+
+const SignIn:FC<Props> = ({ setUserData }) => {
+  async function handleSignInButton() {
+    const accessToken = await signInWithGoogle();
+
+    if (!accessToken) 
+      return
+    
+    const userProfile = await loadProfile(accessToken);
+
+    setUserData({
+      name: userProfile.name, 
+      token: accessToken, 
+      photo: userProfile.picture
+    })
+  }
   
-  async function handleGoogleSignIn() {
+  async function signInWithGoogle() {
     const RESPONSE_TYPE = 'token';
     const SCOPE = encodeURI('profile email');
 
@@ -35,20 +56,33 @@ export default function SignIn() {
     const { 
       type, params 
     } = await AuthSession.startAsync({authUrl}) as AuthResponse;
-  
+    
     if (type === 'success')
-      loadProfile(params.access_token)
+      return params.access_token
+    else 
+      return null
   }
 
-  async function loadProfile(token:string) {
+  async function loadProfile(token:string): Promise<UserProfileResponse> {
     const profileAPI = `https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${token}`; 
     const response = await fetch(profileAPI);
     const userifo: UserProfileResponse = await response.json();
-    console.log(userifo);
+
+    return userifo;
   }
   return (
     <View>
-      <Button title="Google" onPress={()=>{handleGoogleSignIn()}} />
+      <Button title="Google" onPress={()=>{handleSignInButton()}} />
     </View>
   );
 } 
+
+const mapStateToProps = () => {
+  return {
+    
+  }
+}
+
+const SignInConect = connect(mapStateToProps, { setUserData })(SignIn);
+
+export default SignInConect;

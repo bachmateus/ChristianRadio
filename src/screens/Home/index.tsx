@@ -1,13 +1,9 @@
-import { useEffect } from "react";
-import { Button, Modal, Text, View } from "react-native";
-import SignIn from "../../components/SignIn";
+import { Button, Text, View } from "react-native";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
 import listAllStationUseCase from "../../modules/station/useCases/listAllStation";
 
 export default function Home() {
   const onload = async () => {
-
-
     const getCurrentTrack = getCurrentTrackUseCaseInstance();
 
     try {
@@ -25,20 +21,10 @@ export default function Home() {
     }
   }
 
-  return ( <View>
-    <Text>asdasdasd</Text>
-    <Button title="press" onPress={onload} />
-    <Modal
-      
-    >
-      <SignIn />
-    </Modal>
-    {/* <Button
-      title="Google Sign-In"
-      onPress={() => {
-        promptAsync();
-        }}
-    /> */}
-  </View>
+  return ( 
+    <View>
+      <Text>asdasdasd</Text>
+      <Button title="press" onPress={onload} />
+    </View>
   );
 }
