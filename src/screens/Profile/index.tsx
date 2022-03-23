@@ -1,8 +1,8 @@
-import { FC } from "react"
+import React, { FC } from "react"
 import { Button, Image, Modal, Text, View } from "react-native";
 import { connect } from "react-redux";
 
-import SignInConect from "../../components/SignIn";
+import SignInConect from "../../components/SignInModal/SignIn";
 import { AppReducerTypes } from "../../reducers/types";
 import { resetUserData } from "../../reducers/userReducer/actions";
 
