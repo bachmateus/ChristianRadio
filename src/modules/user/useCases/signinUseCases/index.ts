@@ -13,9 +13,9 @@ const getRepositoryInstance = (
   }
 }
 
-const signinUseCase = async (provider:SocialAuthProvider) => {
+const signinWithSocialProvider = async (provider:SocialAuthProvider) => {
   const repository = getRepositoryInstance(provider);
   return await repository.signIn()
 }
 
-export default signinUseCase;
+export default signinWithSocialProvider;
