@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
+import RNTrackPlayerRepository from "../../modules/player/repositories/implementations/RNTrackPlayerRepository";
 import Station from "../../modules/station/model/Station";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
 import listAllStationUseCase from "../../modules/station/useCases/listAllStation";
@@ -8,6 +9,7 @@ export default function Home() {
   const [ isPlaying, setIsPlaying ] = useState(false);
   const [ stations, setStations ] = useState<Station[]>();
   const [ currentStationSelected, setCurrentStationSelected ] = useState<Station>();
+  const player = new RNTrackPlayerRepository();
 
   const onload = async () => {
     const stations = await listAllStationUseCase.execute();
@@ -16,9 +18,17 @@ export default function Home() {
     setCurrentStationSelected(stations[0]);
   }
   
+  const handlePlayerStatus = async () => {
+    const playerStatus = await player.togglePlay(isPlaying);
+    setIsPlaying(playerStatus);
+  }
+
   const onStationChange = async () => {
     const getCurrentTrack = getCurrentTrackUseCaseInstance();
     const currentTrack = await getCurrentTrack.execute(currentStationSelected)
+
+    player.setPlayerData(currentTrack)
+    player.start();
 
     console.log(currentTrack)
     // try {
@@ -54,12 +64,14 @@ export default function Home() {
         <Button key={station.id} title={station.name} onPress={()=>handleStationSelected(station)} />
       )}
 
-      <Button title="press" onPress={onload} />
-      <Button title="press" onPress={onload} />
-      <Button title="press" onPress={onload} />
+      {/* <Button title="play" onPress={onload} /> */}
+      
+      {/* <Button title="press" onPress={onload} /> */}
+      {/* <Button title="press" onPress={onload} /> */}
+      {/* <Button title="press" onPress={onload} /> */}
 
       
-      {/* <Button title={isPlaying ? "Pause" : "Play"} onPress={handlePlayerStatus} /> */}
+      <Button title={isPlaying ? "Pause" : "Play"} onPress={handlePlayerStatus} />
 
     </View>
   );

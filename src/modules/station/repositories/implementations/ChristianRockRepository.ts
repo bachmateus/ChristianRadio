@@ -5,6 +5,7 @@ import {
   CPpowerPraise,
   CClassicRock 
 } from "../../../../databases/christianRockStation.data";
+import Tracker from "../../../player/model/Tracker";
 import Station from "../../model/Station";
 import Track from "../../model/Track";
 import IStationRepository from "../IStationRepository";
@@ -87,14 +88,17 @@ export default class ChristianRockRepository implements IStationRepository{
     });
   }
 
-  async getCurrentTrackPlaying(station:Station): Promise<Track> {
+  async getCurrentTrackPlaying(station:Station): Promise<Tracker> {
     const { stationCode } = station;
     const serverResp = await this.getServerApiResponser();
-    const currentTrack = new Track();
-    currentTrack.Artist = serverResp[stationCode + '_Artist'];
-    currentTrack.CD = serverResp[stationCode + '_CD'];
-    currentTrack.CDCover = this.apiUrl + serverResp[stationCode + '_CDCover'];
-    currentTrack.Title = serverResp[stationCode + '_Title'];
+    
+    const currentTrack = new Tracker();
+    currentTrack.id = serverResp.SongCode.toString();
+    currentTrack.title = serverResp[stationCode + '_Title'];
+    currentTrack.artist = serverResp[stationCode + '_Artist'];
+    currentTrack.album = serverResp[stationCode + '_CD'];
+    currentTrack.artwork = this.apiUrl + serverResp[stationCode + '_CDCover'];
+    currentTrack.url = station.url;
 
     return currentTrack;
   }

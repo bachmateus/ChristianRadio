@@ -11,3 +11,6 @@ LogBox.ignoreLogs([
   "[react-native-gesture-handler] Seems like you\'re using an old API with gesture components, check out new Gestures system!",
 ]);
 AppRegistry.registerComponent(appName, () => App);
+
+// react native track player setup
+TrackPlayer.registerPlaybackService(() => require('./src/modules/player/rn-track-player.service'));
