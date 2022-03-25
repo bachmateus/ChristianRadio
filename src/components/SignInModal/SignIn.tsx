@@ -13,8 +13,8 @@ const SignIn:FC<Props> = ({ setUserData }) => {
 
   async function handleSignInButton() {
     try { 
-      const user = await signinWithSocialProvider('Google');
-      console.log(user);
+      const userData = await signinWithSocialProvider('Google');
+      setUserData(userData);
     } catch (e) {
       console.error(e)
     }

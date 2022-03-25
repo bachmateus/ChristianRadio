@@ -5,6 +5,7 @@ import {
   CPpowerPraise,
   CClassicRock 
 } from "../../../../databases/christianRockStation.data";
+import Tracker from "../../../player/model/Tracker";
 import Station from "../../model/Station";
 import Track from "../../model/Track";
 import IStationRepository from "../IStationRepository";
@@ -71,7 +72,7 @@ interface ApiResponse {
 export default class ChristianRockRepository implements IStationRepository{
   apiUrl:string = "https://www.christianhardrock.net";
   endpoint:string = "/iphoneCHRDN.asp?_=1620442597658";
-  serverResponse:ApiResponse = null;
+  serverResponse:ApiResponse | null = null;
 
   listAll(): Promise<Station[]> {
     const stations:Station[] = [
@@ -87,23 +88,42 @@ export default class ChristianRockRepository implements IStationRepository{
     });
   }
 
-  async getCurrentTrackPlaying(station:Station): Promise<Track> {
-    const { stationCode } = station;
-    const serverResp = await this.getServerApiResponser();
-    const currentTrack = new Track();
-    currentTrack.Artist = serverResp[stationCode + '_Artist'];
-    currentTrack.CD = serverResp[stationCode + '_CD'];
-    currentTrack.CDCover = this.apiUrl + serverResp[stationCode + '_CDCover'];
-    currentTrack.Title = serverResp[stationCode + '_Title'];
+  async getCurrentTrackPlaying(station:Station): Promise<Tracker> {
+    try {
+      const { stationCode } = station;
+      const serverResp:ApiResponse = await this.getServerApiResponser();
+      
+      const currentTrack = new Tracker();
 
-    return currentTrack;
+      if (serverResp) {
+        currentTrack.id = serverResp.SongCode.toString();
+        // @ts-ignore
+        currentTrack.title = serverResp[stationCode + '_Title'];
+        // @ts-ignore
+        currentTrack.artist = serverResp[stationCode + '_Artist'];
+        // @ts-ignore
+        currentTrack.album = serverResp[stationCode + '_CD'];
+        // @ts-ignore
+        currentTrack.artwork = this.apiUrl + serverResp[stationCode + '_CDCover'];
+        currentTrack.url = station.url;
+    
+        return currentTrack;
+      }
+
+      currentTrack.url = station.url;
+      return currentTrack
+
+    } catch (e) {
+      const currentTrack = new Tracker();
+      currentTrack.url = station.url;
+      return currentTrack
+    }
   }
 
   async getServerApiResponser():Promise<ApiResponse> {
     if (this.serverResponse)
       return this.serverResponse
 
-    console.log('getServerApiResponser');
     try {
       const apiResponse = await fetch(this.apiUrl + this.endpoint, {
         method:'GET',
@@ -117,7 +137,7 @@ export default class ChristianRockRepository implements IStationRepository{
 
       return apiResponse;
     } catch (e) {
-        throw new Error(e);
+        throw e;
     }
   }
 }

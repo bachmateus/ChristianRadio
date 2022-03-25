@@ -1,13 +1,14 @@
 import { Dispatch } from "react"
-import { TUser, UserListAction, USER_ACTION_TYPES } from "./types"
+import User from "../../modules/user/model/User"
+import { UserListAction, USER_ACTION_TYPES } from "./types"
 
 export const setUserData = (
-  { name, token, photo }:TUser
+  user:User
 ) => {
   return (dispatch:Dispatch<UserListAction>) => {
     dispatch({
       type: USER_ACTION_TYPES.SET_USER_DATA,
-      token, name, photo
+      ...user
     })
   }
 }

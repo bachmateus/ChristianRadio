@@ -10,13 +10,12 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.brentvatne.react.ReactVideoPackage;
 
 import com.facebook.react.bridge.JSIModulePackage; // <- add
-import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
+  import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
 
-import androidx.multidex.MultiDexApplication;
-
-public class MainApplication extends MultiDexApplication implements ReactApplication {
+public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -31,7 +30,10 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          // packages.add(new RNAppAuthPackage());
+          // packages.add(new MainReactPackage());
+          // packages.add(new ReactVideoPackage());
+          // packages.add(new RNGoogleSigninPackage());
+          
           return packages;
         }
 
@@ -39,7 +41,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         protected String getJSMainModuleName() {
           return "index";
         }
-        
+
         @Override
         protected JSIModulePackage getJSIModulePackage() {
           return new ReanimatedJSIModulePackage(); // <- add
