@@ -1,10 +1,12 @@
-import TrackPlayer, { Capability } from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
 
 import Tracker from "../../model/Tracker";
 import IPlayerRepository from "../IPlayerRepository";
 
 export default class RNTrackPlayerRepository implements IPlayerRepository {
-  constructor(private tracker?: Tracker) {}
+  private tracker: Tracker = new Tracker();
+
+  constructor() {}
   
   async setPlayerData(playerData: Tracker): Promise<void> {
     const stationHasChanged = this.tracker.id != playerData.id;
@@ -32,21 +34,21 @@ export default class RNTrackPlayerRepository implements IPlayerRepository {
       stopWithApp: true,
       alwaysPauseOnInterruption: true,
       capabilities: [
-        Capability.Play,
-        Capability.Pause,
-        Capability.Stop,
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_STOP,
       ],
       compactCapabilities: [
-        Capability.Play,
-        Capability.Pause,
-        Capability.Stop,
+        TrackPlayer.CAPABILITY_PLAY,
+        TrackPlayer.CAPABILITY_PAUSE,
+        TrackPlayer.CAPABILITY_STOP,
       ]
     });
 
     await TrackPlayer.add(this.tracker);
 
     const playResp = await TrackPlayer.play();
-    console.log(playResp);
+    // console.log(playResp);
   }
   
   async togglePlay(isPlaying:boolean): Promise<boolean> {

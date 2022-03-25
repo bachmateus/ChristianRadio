@@ -8,8 +8,8 @@ const{ Navigator, Screen } = createDrawerNavigator();
 export default function MainRoute() {
   return (
     <Navigator>
-      <Screen name="Profile" component={ProfileConect} />
       <Screen name="Playing" component={Home} />
+      <Screen name="Profile" component={ProfileConect} />
     </Navigator>
   );
 }

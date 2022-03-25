@@ -10,22 +10,29 @@ GoogleSignin.configure({
 });
 
 export async function signIn() {
-  const { idToken } = await GoogleSignin.signIn();
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  try {
+    const resp = await GoogleSignin.signIn();
+    console.log(resp)
+    return
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    console.log(googleCredential)
 
-  const userData: FirebaseAuthTypes.UserCredential = await auth().signInWithCredential(googleCredential);
-  const user = new User();
-
-  Object.assign(user, {
-    id: userData.user.uid,
-    email: userData.user.email,
-    givenName: userData.additionalUserInfo.profile.given_name,
-    fullName: userData.user.displayName,
-    photo: userData.user.photoURL,
-    providerId: userData.additionalUserInfo.providerId
-  });
-
-  return user;
+    const userData: FirebaseAuthTypes.UserCredential = await auth().signInWithCredential(googleCredential);
+    const user = new User();
+    
+    Object.assign(user, {
+      id: userData.user.uid,
+      email: userData.user.email,
+      givenName: userData.additionalUserInfo.profile.given_name,
+      fullName: userData.user.displayName,
+      photo: userData.user.photoURL,
+      providerId: userData.additionalUserInfo.providerId
+    });
+    
+    return user;
+  } catch(e) {
+    console.log(e)
+  }
 }
 
 export async function signOut() {
