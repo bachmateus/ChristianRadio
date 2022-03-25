@@ -1,8 +1,3 @@
-export type TUser = {
-  name: string
-  token: string
-  photo: string
-}
 
 export enum USER_ACTION_TYPES {
   SET_USER_DATA = "SET_USER_DATA",
@@ -11,9 +6,12 @@ export enum USER_ACTION_TYPES {
 
 export type SetUserDataAction = {
   type:USER_ACTION_TYPES.SET_USER_DATA
-  name: string
-  token: string
+  id: string
+  email: string
+  givenName: string
+  fullName: string
   photo: string
+  providerId: string
 }
 
 export type ResetUserDataAction = {

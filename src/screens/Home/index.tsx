@@ -36,10 +36,6 @@ export default function Home() {
 
   const handleStationSelected = async (station:Station) => {
     setCurrentStationSelected(station)
-
-    // const getCurrentTrack = getCurrentTrackUseCaseInstance();
-    // const currentTrack = await getCurrentTrack.execute(station)
-    // console.log(currentTrack);
   }
 
   useEffect(()=>{ onload() },[])

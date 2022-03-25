@@ -48,7 +48,6 @@ export default class RNTrackPlayerRepository implements IPlayerRepository {
     await TrackPlayer.add(this.tracker);
 
     const playResp = await TrackPlayer.play();
-    // console.log(playResp);
   }
   
   async togglePlay(isPlaying:boolean): Promise<boolean> {

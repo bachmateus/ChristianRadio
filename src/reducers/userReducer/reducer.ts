@@ -1,19 +1,26 @@
-import { TUser, UserListAction } from "./types";
+import User from "../../modules/user/model/User";
+import { UserListAction } from "./types";
 
-const initalState: TUser = {
-  token: "",
-  name: "",
-  photo: ""
+const initalState: User = {
+  id: "",
+  email: "",
+  givenName: "",
+  fullName: "",
+  photo: "",
+  providerId: ""
 }
 
-export default (state: TUser = initalState, action:UserListAction) => {
+export default (state: User = initalState, action:UserListAction) => {
   switch (action.type) {
     case 'SET_USER_DATA' :
       return {
         ...state, 
-        name:action.name,
-        token:action.token,
-        photo:action.photo
+        id: action.id,
+        email: action.email,
+        givenName: action.givenName,
+        fullName: action.fullName,
+        photo: action.photo,
+        providerId: action.providerId
       } 
     
     case 'RESET_USER_DATA':

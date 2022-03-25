@@ -11,11 +11,8 @@ GoogleSignin.configure({
 
 export async function signIn() {
   try {
-    const resp = await GoogleSignin.signIn();
-    console.log(resp)
-    return
+    const {idToken} = await GoogleSignin.signIn();
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-    console.log(googleCredential)
 
     const userData: FirebaseAuthTypes.UserCredential = await auth().signInWithCredential(googleCredential);
     const user = new User();
@@ -31,7 +28,7 @@ export async function signIn() {
     
     return user;
   } catch(e) {
-    console.log(e)
+    console.error(e)
   }
 }
 

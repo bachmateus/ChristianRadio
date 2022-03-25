@@ -92,8 +92,6 @@ export default class ChristianRockRepository implements IStationRepository{
     try {
       const { stationCode } = station;
       const serverResp:ApiResponse = await this.getServerApiResponser();
-      // console.log(serverResp)
-
       
       const currentTrack = new Tracker();
 

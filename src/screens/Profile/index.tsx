@@ -8,28 +8,28 @@ import { resetUserData } from "../../reducers/userReducer/actions";
 
 interface Props {
   name:string
-  token:string
+  id:string
   photo:string
   resetUserData:Function
 }
 
-const Profile:FC<Props> = ({name, token, photo, resetUserData}) => {
+const Profile:FC<Props> = ({name, id, photo, resetUserData}) => {
   const handleLogout = () => {
     resetUserData()
   }
 
   return (
     <View>
-      { (token.length > 0) && (
+      { (id.length > 0) && (
         <>
           <Text>name: {name}</Text>
-          <Text>token: {token}</Text>
+          <Text>id: {id}</Text>
           <Image source={{uri:photo}} style={{width: 200, height: 200}}/>
         </>
       )}
 
       <Modal 
-        visible={token.length === 0}
+        visible={id.length == 0}
       >
         <SignInConect />
       </Modal>
@@ -41,8 +41,8 @@ const Profile:FC<Props> = ({name, token, photo, resetUserData}) => {
 
 const mapStateToProps = (state: AppReducerTypes) => {
   return {
-    name: state.userReducer.name,
-    token: state.userReducer.token,
+    name: state.userReducer.givenName,
+    id: state.userReducer.id,
     photo: state.userReducer.photo,
   }
 }
