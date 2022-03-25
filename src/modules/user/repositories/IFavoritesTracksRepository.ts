@@ -1,0 +1,13 @@
+import Track from '../../station/model/Track';
+
+export interface ISetMusicAsFavoriteDTO {
+  userKey: string
+  music: Track
+} 
+
+export default interface IFavoritesTracksRepository {
+  setMusicAsFavorite(iSetMusicAsFavoriteDTO:ISetMusicAsFavoriteDTO): Promise<boolean>
+  getAllFavoritesTracks(userKey:string): Promise<Track[]>
+  getFavoriteTrack(userKey: string, songCode: string): Promise<Track|null>
+  removeMusicFromFavorite(music: Track): Promise<boolean>
+}
