@@ -1,5 +1,5 @@
 export default class Track {
-  SongCode: number;
+  SongCode: string;
   Title: string;
   Artist: string;
   CD: string;

@@ -1,9 +1,8 @@
+import { GOOGLE_SIGNIN_CLIENT_ID } from '@env';
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import User from '../../model/User';
-
-const { GOOGLE_SIGNIN_CLIENT_ID } = process.env
 
 GoogleSignin.configure({
   webClientId: GOOGLE_SIGNIN_CLIENT_ID,

@@ -17,7 +17,6 @@ const Profile:FC<Props> = ({name, id, photo, resetUserData}) => {
   const handleLogout = () => {
     resetUserData()
   }
-
   return (
     <View>
       { (id.length > 0) && (
