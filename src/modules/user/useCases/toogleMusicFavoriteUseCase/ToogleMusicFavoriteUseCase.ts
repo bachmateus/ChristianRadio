@@ -9,9 +9,11 @@ export default class ToogleMusicFavoriteUseCase {
       music.SongCode.toString()
     );
 
+    
     if (favoriteTrack === null) 
       return this.favoriteTracksRepository.setMusicAsFavorite({userKey, music});
     
+    // console.log(favoriteTrack.Title,music.Title)
     return this.favoriteTracksRepository.removeMusicFromFavorite(favoriteTrack);
   }
 }

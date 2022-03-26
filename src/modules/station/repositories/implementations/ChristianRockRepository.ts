@@ -71,8 +71,7 @@ interface ApiResponse {
 
 export default class ChristianRockRepository implements IStationRepository{
   apiUrl:string = "https://www.christianhardrock.net";
-  endpoint:string = "/iphoneCHRDN.asp?_=1620442597658";
-  serverResponse:ApiResponse | null = null;
+  endpoint:string = "iphoneCHRDN.asp?_=1620442597658";
 
   listAll(): Promise<Station[]> {
     const stations:Station[] = [
@@ -90,10 +89,13 @@ export default class ChristianRockRepository implements IStationRepository{
 
   async getCurrentTrackPlaying(station:Station): Promise<Tracker> {
     try {
-      const { stationCode } = station;
-      const serverResp:ApiResponse = await this.getServerApiResponser();
+      const { stationCode, site } = station;
+      // console.log(url)
+      const serverResp:ApiResponse = await this.getServerApiResponser(site);
       
       const currentTrack = new Tracker();
+
+      // console.log(serverResp)
 
       if (serverResp) {
         currentTrack.id = serverResp.SongCode.toString();
@@ -120,20 +122,15 @@ export default class ChristianRockRepository implements IStationRepository{
     }
   }
 
-  async getServerApiResponser():Promise<ApiResponse> {
-    if (this.serverResponse)
-      return this.serverResponse
-
+  async getServerApiResponser(apiUrl:string):Promise<ApiResponse> {
     try {
-      const apiResponse = await fetch(this.apiUrl + this.endpoint, {
+      const apiResponse = await fetch(apiUrl + this.endpoint, {
         method:'GET',
         headers: {
             "Accept": "application/json",
             "Content-type": "application/json"
         },
       }).then((r)=>r.json());
-
-      this.serverResponse = apiResponse;
 
       return apiResponse;
     } catch (e) {

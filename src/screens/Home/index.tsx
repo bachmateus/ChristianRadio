@@ -16,18 +16,22 @@ const userKey= "zjNfgJTtGgTnho3GxWnbVSiSi823"
 
 export default function Home() {
   const [ isPlaying, setIsPlaying ] = useState(false);
+  const [ isLoadingData, setIsLoadingData ] = useState(false);
   const [ stations, setStations ] = useState<Station[]>();
   const [ currentStationSelected, setCurrentStationSelected ] = useState<Station>({} as Station);
   const [ currentTrack, setCurrentTrack ] = useState({} as Tracker)
   const [ player ] = useState( new RNTrackPlayerRepository());
 
+
   const onload = async () => {
+    setIsLoadingData(false);
     const stations = await listAllStationUseCase.execute();
     setStations(stations);
     setCurrentStationSelected(stations![0]);
 
     const rep = new FirebaseFavoritesTracksRepository();
     const favorites = await rep.getAllFavoritesTracks(userKey);
+    setIsLoadingData(true);
   }
   
   const handlePlayerStatus = async () => {
@@ -36,13 +40,17 @@ export default function Home() {
   }
 
   const onStationChange = async () => {
+    setIsLoadingData(false);
+
     const getCurrentTrack = getCurrentTrackUseCaseInstance();
     const currentTrack = await getCurrentTrack.execute(currentStationSelected)
+    // console.log(currentTrack);
 
     player.setPlayerData(currentTrack)
     player.start();
 
     setCurrentTrack(currentTrack)
+    setIsLoadingData(true);
   }
 
   const handleStationSelected = async (station:Station) => {
@@ -50,7 +58,8 @@ export default function Home() {
   }
 
   const handleFavorite = () => {
-    toogleMusicFavoriteUseCase.execute({
+
+    toogleMusicFavoriteUseCase().execute({
       userKey,
       music: {
         Artist: currentTrack.artist,
@@ -69,14 +78,18 @@ export default function Home() {
     <View>
       {/* <Text style={{marginBottom: 20}}>Station: {'\n' + JSON.stringify( currentStationSelected)}</Text> */}
       {/* <Text style={{marginBottom: 20}}>Track: {'\n' + JSON.stringify( currentTrack)}</Text> */}
-      <Image source={{uri: currentTrack.artwork}} style={{width: 100, height: 100}}/>
+      {/* <Image source={{uri: currentTrack.artwork}} style={{width: 100, height: 100}}/> */}
+      <Text>{currentTrack.title}</Text>
+
       { stations && stations.map( station => 
         <Button key={station.id} title={station.name} onPress={()=>handleStationSelected(station)} />
       )}
-
-      <Button title={"Favorite"} onPress={handleFavorite} />
       
-      <Button title={isPlaying ? "Pause" : "Play"} onPress={handlePlayerStatus} />
+      {isLoadingData && ( <>
+        <Button title={"Favorite"} onPress={handleFavorite} />
+        <Button title={isPlaying ? "Pause" : "Play"} onPress={handlePlayerStatus} />
+      </>)}
+      
       <Text>{FIREBASE_USER_MUSICS}</Text>
     </View>
   );
