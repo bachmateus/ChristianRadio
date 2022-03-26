@@ -11,7 +11,7 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
       const newReference = database().ref(FIREBASE_USER_MUSICS).push();
       
       const saveResp = await newReference
-      .set({ ...music, userKey, createdAt: Date.now() })
+        .set({ ...music, userKey, createdAt: Date.now() })
       
       return true;
     } catch (e) {
@@ -31,7 +31,10 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
  
   async getFavoriteTrack(userKey: string, songCode: string): Promise<Track> {
     try {
-      const allFavorites = await this.getAllFavoritesTracks(userKey);
+      const allFavorites = await this.getAllFavoritesTracksWithFirebaseKeys(userKey);
+
+      if (!allFavorites)
+        return null
 
       const allFavoritesObjToArray = Object.entries(allFavorites);
         
@@ -40,6 +43,8 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
 
         return currentData.SongCode.toString() == songCode;
       });
+      // console.log(songCode, favoritesTrack)
+
 
       if (favoritesTrack.length === 0)
         return null
@@ -53,7 +58,7 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
     }
   }
 
-  async getAllFavoritesTracks(userKey: string): Promise<Track[]> {
+  async getAllFavoritesTracksWithFirebaseKeys(userKey: string): Promise<Track[]> {
     try {
       const resp = await database().ref(FIREBASE_USER_MUSICS)
       .orderByChild('userKey').equalTo(userKey).once('value');
@@ -62,6 +67,25 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
   
       return favorites;
     } catch(e) {
+      throw new Error(e);
+    }
+  }
+
+  async getAllFavoritesTracks(userKey:string): Promise<Track[]> {
+    try {
+      const allFavorites = await this.getAllFavoritesTracksWithFirebaseKeys(userKey);
+      
+      if (!allFavorites)
+        return []
+
+      const allFavoritesObjToArray = Object.entries(allFavorites);
+
+      const favoritesTrack:Track[] = allFavoritesObjToArray.map( 
+        (favorite) => favorite[1]
+      );
+
+      return favoritesTrack;
+    } catch (e) {
       throw new Error(e);
     }
   }

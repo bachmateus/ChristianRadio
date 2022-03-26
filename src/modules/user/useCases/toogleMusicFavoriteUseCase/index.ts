@@ -1,7 +1,6 @@
-import FirebaseFavoritesTracksRepository from "../../repositories/implementations/FirebaseFavoritesTracksRepository";
+import { tracksRepository } from "..";
 import ToogleMusicFavoriteUseCase from "./ToogleMusicFavoriteUseCase";
 
-const firebaseFavoritesTracksRepository = new FirebaseFavoritesTracksRepository();
-const toogleMusicFavoriteUseCase = new ToogleMusicFavoriteUseCase(firebaseFavoritesTracksRepository);
+const toogleMusicFavoriteUseCase = () => new ToogleMusicFavoriteUseCase(tracksRepository);
 
 export default toogleMusicFavoriteUseCase;
