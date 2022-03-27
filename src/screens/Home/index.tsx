@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Image, ImageBackground, Text, View } from "react-native";
+import { Image, ImageBackground, Text, View } from "react-native";
+import { connect } from "react-redux";
 
 import Station from "../../modules/station/model/Station";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
@@ -9,27 +10,29 @@ import PlayerTrack from "../../modules/player/model/PlayerTrack";
 import RNTrackPlayerRepository from "../../modules/player/repositories/implementations/RNTrackPlayerRepository";
 
 import toogleMusicFavoriteUseCase from "../../modules/user/useCases/toogleMusicFavoriteUseCase";
-import MusicPlayer from "../../components/MusicPlayer";
-import styles, { windowWidth } from "./styles";
-import Carousel from "react-native-snap-carousel";
-import { animatedStyles, scrollInterpolator } from "./animations";
-import RenderRadio from "./RenderStationCarousel";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import genericAlbumImg from '../../assets/generic-album.png';
-
-import playerStyles from '../../components/MusicPlayer/styles'
 import checkIfIsFavorite from "../../modules/user/useCases/checkIfIsFavorite";
-const userKey= "zjNfgJTtGgTnho3GxWnbVSiSi823"
 
-export default function Home() {
+import MusicPlayer from "../../components/MusicPlayer";
+import playerStyles from '../../components/MusicPlayer/styles'
+
+import { AppReducerTypes } from "../../reducers/types";
+import genericAlbumImg from '../../assets/generic-album.png';
+import styles from "./styles";
+
+interface Props {
+  userKey: string
+}
+
+function HomeConnect({userKey}: Props) {
   const [ isPlaying, setIsPlaying ] = useState(true);
   const [ isLoadingData, setIsLoadingData ] = useState(false);
   const [ isTrackFavorite, setIsTrackFavorite ] = useState(false);
+
   const [ stations, setStations ] = useState<Station[]>();
   const [ currentStationSelected, setCurrentStationSelected ] = useState<Station>({} as Station);
   const [ currentTrack, setCurrentTrack ] = useState({} as PlayerTrack)
   const [ player ] = useState( new RNTrackPlayerRepository());
-  const carousel = useRef(null);
+  const interval = useRef<ReturnType<typeof setInterval>>(null);
 
 
   const onload = async () => {
@@ -46,30 +49,43 @@ export default function Home() {
   }
 
   const onStationChange = async () => {
-    setIsLoadingData(true);
+    clearInterval(interval.current);
 
+    interval.current = setInterval(() => {
+      getStationData();
+    }, 500);
+  }
+  
+  const getStationData = async () => {
+    setIsLoadingData(true);
+  
     const getCurrentTrack = getCurrentTrackUseCaseInstance();
-    const currentTrack = await getCurrentTrack.execute(currentStationSelected)
+    const newCurrentTrack = await getCurrentTrack.execute(currentStationSelected)
+    
+    if (newCurrentTrack.id === currentTrack.id) {
+      setIsLoadingData(false);
+      return
+    }
+
     const resCheckIfIsFavorite = await checkIfIsFavorite.execute({
       userKey,
-      songCode:currentTrack.id
+      songCode:newCurrentTrack.id
     });
-
+  
     setIsTrackFavorite(resCheckIfIsFavorite);
-
-    player.setPlayerData(currentTrack)
-
-    setCurrentTrack(currentTrack)
+  
+    player.setPlayerData(newCurrentTrack)
+  
+    setCurrentTrack(newCurrentTrack)
     setIsLoadingData(false);
   }
-
   
   useEffect(()=>{ onload() },[])
   useEffect(()=>{ onStationChange() }, [currentStationSelected])
 
-  const handleStationSelected = async (station:Station) => {
-    setCurrentStationSelected(station)
-  }
+  // const handleStationSelected = async (station:Station) => {
+  //   setCurrentStationSelected(station)
+  // }
 
   const handleFavorite = async () => {
 
@@ -114,10 +130,7 @@ export default function Home() {
             You're listening to
           </Text>
           <Image resizeMode="contain" source={currentStationSelected.logo} 
-            style={{
-              height: 50,
-              maxWidth: 320
-            }} 
+            style={{ height: 50, maxWidth: 320}} 
           />
         </View>
       </View>
@@ -144,3 +157,13 @@ export default function Home() {
     </ImageBackground>
   );
 }
+
+const mapStateToProps = (state: AppReducerTypes) => {
+  return {
+    userKey: state.userReducer.id,
+  }
+}
+
+const Home = connect(mapStateToProps)(HomeConnect);
+
+export default Home;
