@@ -5,10 +5,12 @@ import {
   CPpowerPraise,
   CClassicRock 
 } from "../../../../databases/christianRockStation.data";
-import Tracker from "../../../player/model/Tracker";
+import PlayerTrack from "../../../player/model/PlayerTrack";
 import Station from "../../model/Station";
 import Track from "../../model/Track";
 import IStationRepository from "../IStationRepository";
+
+const md5 = require('md5');
 
 interface ApiResponse {
   Artist: string;
@@ -87,18 +89,14 @@ export default class ChristianRockRepository implements IStationRepository{
     });
   }
 
-  async getCurrentTrackPlaying(station:Station): Promise<Tracker> {
+  async getCurrentTrackPlaying(station:Station): Promise<PlayerTrack> {
     try {
       const { stationCode, site } = station;
-      // console.log(url)
       const serverResp:ApiResponse = await this.getServerApiResponser(site);
       
-      const currentTrack = new Tracker();
-
-      // console.log(serverResp)
+      const currentTrack = new PlayerTrack();
 
       if (serverResp) {
-        currentTrack.id = serverResp.SongCode.toString();
         // @ts-ignore
         currentTrack.title = serverResp[stationCode + '_Title'];
         // @ts-ignore
@@ -108,6 +106,7 @@ export default class ChristianRockRepository implements IStationRepository{
         // @ts-ignore
         currentTrack.artwork = this.apiUrl + serverResp[stationCode + '_CDCover'];
         currentTrack.url = station.url;
+        currentTrack.id =  md5(`${currentTrack.title} ${currentTrack.artist}`)
     
         return currentTrack;
       }
@@ -116,7 +115,7 @@ export default class ChristianRockRepository implements IStationRepository{
       return currentTrack
 
     } catch (e) {
-      const currentTrack = new Tracker();
+      const currentTrack = new PlayerTrack();
       currentTrack.url = station.url;
       return currentTrack
     }

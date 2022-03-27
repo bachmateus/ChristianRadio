@@ -1,65 +1,79 @@
-import React, { useEffect, useState } from "react";
-import { Button, Image, Text, View } from "react-native";
-import { FIREBASE_USER_MUSICS } from "@env";
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Image, ImageBackground, Text, View } from "react-native";
 
 import Station from "../../modules/station/model/Station";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
 import listAllStationUseCase from "../../modules/station/useCases/listAllStation";
 
-import Tracker from "../../modules/player/model/Tracker";
+import PlayerTrack from "../../modules/player/model/PlayerTrack";
 import RNTrackPlayerRepository from "../../modules/player/repositories/implementations/RNTrackPlayerRepository";
 
-import FirebaseFavoritesTracksRepository from "../../modules/user/repositories/implementations/FirebaseFavoritesTracksRepository";
 import toogleMusicFavoriteUseCase from "../../modules/user/useCases/toogleMusicFavoriteUseCase";
+import MusicPlayer from "../../components/MusicPlayer";
+import styles, { windowWidth } from "./styles";
+import Carousel from "react-native-snap-carousel";
+import { animatedStyles, scrollInterpolator } from "./animations";
+import RenderRadio from "./RenderStationCarousel";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import genericAlbumImg from '../../assets/generic-album.png';
 
+import playerStyles from '../../components/MusicPlayer/styles'
+import checkIfIsFavorite from "../../modules/user/useCases/checkIfIsFavorite";
 const userKey= "zjNfgJTtGgTnho3GxWnbVSiSi823"
 
 export default function Home() {
-  const [ isPlaying, setIsPlaying ] = useState(false);
+  const [ isPlaying, setIsPlaying ] = useState(true);
   const [ isLoadingData, setIsLoadingData ] = useState(false);
+  const [ isTrackFavorite, setIsTrackFavorite ] = useState(false);
   const [ stations, setStations ] = useState<Station[]>();
   const [ currentStationSelected, setCurrentStationSelected ] = useState<Station>({} as Station);
-  const [ currentTrack, setCurrentTrack ] = useState({} as Tracker)
+  const [ currentTrack, setCurrentTrack ] = useState({} as PlayerTrack)
   const [ player ] = useState( new RNTrackPlayerRepository());
+  const carousel = useRef(null);
 
 
   const onload = async () => {
-    setIsLoadingData(false);
+    setIsLoadingData(true);
     const stations = await listAllStationUseCase.execute();
     setStations(stations);
     setCurrentStationSelected(stations![0]);
-
-    const rep = new FirebaseFavoritesTracksRepository();
-    const favorites = await rep.getAllFavoritesTracks(userKey);
-    setIsLoadingData(true);
+    setIsLoadingData(false);
   }
   
-  const handlePlayerStatus = async () => {
-    const playerStatus = await player.togglePlay(isPlaying);
+  const handlePlayButtonPress = async () => {
+    const playerStatus = await player.togglePlay(!isPlaying);
     setIsPlaying(playerStatus);
   }
 
   const onStationChange = async () => {
-    setIsLoadingData(false);
+    setIsLoadingData(true);
 
     const getCurrentTrack = getCurrentTrackUseCaseInstance();
     const currentTrack = await getCurrentTrack.execute(currentStationSelected)
-    // console.log(currentTrack);
+    const resCheckIfIsFavorite = await checkIfIsFavorite.execute({
+      userKey,
+      songCode:currentTrack.id
+    });
+
+    setIsTrackFavorite(resCheckIfIsFavorite);
 
     player.setPlayerData(currentTrack)
-    player.start();
 
     setCurrentTrack(currentTrack)
-    setIsLoadingData(true);
+    setIsLoadingData(false);
   }
+
+  
+  useEffect(()=>{ onload() },[])
+  useEffect(()=>{ onStationChange() }, [currentStationSelected])
 
   const handleStationSelected = async (station:Station) => {
     setCurrentStationSelected(station)
   }
 
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
 
-    toogleMusicFavoriteUseCase().execute({
+    const isFavorite = await toogleMusicFavoriteUseCase().execute({
       userKey,
       music: {
         Artist: currentTrack.artist,
@@ -68,29 +82,65 @@ export default function Home() {
         SongCode: currentTrack.id,
         Title: currentTrack.title
       }
-    })
+    });
+
+    setIsTrackFavorite(isFavorite);
+    
   }
 
-  useEffect(()=>{ onload() },[])
-  useEffect(()=>{ onStationChange() }, [currentStationSelected])
+  const handlePrevious = () => {
+    const index =  (currentStationSelected.id == 1) ? stations.length - 1 : currentStationSelected.id - 2;
+    setCurrentStationSelected(stations[index]);
+  }
+  const handleNext = () => {
+    const index = (currentStationSelected.id === stations.length)  ? 0 : currentStationSelected.id
+    setCurrentStationSelected(stations[index]);
+  }
+
 
   return ( 
-    <View>
-      {/* <Text style={{marginBottom: 20}}>Station: {'\n' + JSON.stringify( currentStationSelected)}</Text> */}
-      {/* <Text style={{marginBottom: 20}}>Track: {'\n' + JSON.stringify( currentTrack)}</Text> */}
-      {/* <Image source={{uri: currentTrack.artwork}} style={{width: 100, height: 100}}/> */}
-      <Text>{currentTrack.title}</Text>
+    <ImageBackground 
+      style={styles.container} imageStyle={styles.containerBackground}
+      blurRadius={50} 
+      resizeMethod="scale" 
+      source={ currentTrack.artwork !== ""
+        ? {uri:currentTrack.artwork}
+        : genericAlbumImg
+      }
+    >
+      <View style={playerStyles.playerMusicInfo}>
+        <View>
+          <Text style={playerStyles.musicArtistLbl}>
+            You're listening to
+          </Text>
+          <Image resizeMode="contain" source={currentStationSelected.logo} 
+            style={{
+              height: 50,
+              maxWidth: 320
+            }} 
+          />
+        </View>
+      </View>
 
-      { stations && stations.map( station => 
-        <Button key={station.id} title={station.name} onPress={()=>handleStationSelected(station)} />
-      )}
-      
-      {isLoadingData && ( <>
-        <Button title={"Favorite"} onPress={handleFavorite} />
-        <Button title={isPlaying ? "Pause" : "Play"} onPress={handlePlayerStatus} />
-      </>)}
-      
-      <Text>{FIREBASE_USER_MUSICS}</Text>
-    </View>
+      <View style={styles.capaBox}>
+        <Image 
+          style={styles.capa} 
+          source={ currentTrack.artwork !== ""
+            ? {uri: currentTrack.artwork}
+            : genericAlbumImg
+          } 
+        />
+      </View>
+
+      <MusicPlayer 
+        track={currentTrack} 
+        isTrackFavorite={isTrackFavorite} 
+        isPlaying={isPlaying} 
+        handleFavorite={handleFavorite}
+        handlePrevious={handlePrevious}
+        handlePlay={handlePlayButtonPress}
+        handleNext={handleNext}
+      />
+    </ImageBackground>
   );
 }

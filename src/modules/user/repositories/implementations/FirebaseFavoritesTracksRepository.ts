@@ -23,7 +23,7 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
     try {
       const resp = await database().ref(FIREBASE_USER_MUSICS + music.SongCode).remove();
 
-      return true;
+      return false;
     } catch (e) {
       throw new Error(e);
     }

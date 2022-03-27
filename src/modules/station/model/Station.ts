@@ -1,3 +1,5 @@
+import { ImageProps } from "react-native"
+
 export default class Station {
   id?: number
   stationCode: string 
@@ -5,5 +7,5 @@ export default class Station {
   site: string
   url: string
   endpoint: string
-  logo: string
+  logo: Readonly<ImageProps>
 }
