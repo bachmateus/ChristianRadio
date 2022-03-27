@@ -1,10 +1,11 @@
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
 
 import PlayerTrack from "../../model/PlayerTrack";
 import IPlayerRepository from "../IPlayerRepository";
 
 export default class RNTrackPlayerRepository implements IPlayerRepository {
   private playerTrack: PlayerTrack = new PlayerTrack();
+  private playbackState = usePlaybackState();
 
   constructor() {}
   

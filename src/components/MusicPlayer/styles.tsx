@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
 
-  favoriteBox: {},
+  favoriteBox: { position:"relative"},
   favoriteImage: {},
 
   containerButtons: {
@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
 
+  boxButton: {
+    position:'relative'
+  },
   customButton: {
     width: 20,
     height: 20,
