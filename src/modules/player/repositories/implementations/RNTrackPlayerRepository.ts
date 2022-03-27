@@ -1,28 +1,33 @@
 import TrackPlayer from 'react-native-track-player';
 
-import Tracker from "../../model/Tracker";
+import PlayerTrack from "../../model/PlayerTrack";
 import IPlayerRepository from "../IPlayerRepository";
 
 export default class RNTrackPlayerRepository implements IPlayerRepository {
-  private tracker: Tracker = new Tracker();
+  private playerTrack: PlayerTrack = new PlayerTrack();
 
   constructor() {}
   
-  async setPlayerData(playerData: Tracker): Promise<void> {
-    const stationHasChanged = this.tracker.id != playerData.id;
+  async setPlayerData(playerData: PlayerTrack): Promise<void> {
+    console.log(playerData)
+    
+    if (!playerData.url) 
+      return 
 
-    this.tracker.id = playerData.id;
-    this.tracker.url = playerData.url;
-    this.tracker.title = playerData.title;
-    this.tracker.artist = playerData.artist;
-    this.tracker.artwork = playerData.artwork;
+    const stationHasChanged = this.playerTrack.url != playerData.url;
+
+    this.playerTrack.id = playerData.id;
+    this.playerTrack.url = playerData.url;
+    this.playerTrack.title = playerData.title;
+    this.playerTrack.artist = playerData.artist;
+    this.playerTrack.artwork = playerData.artwork;
 
     if (stationHasChanged)
       await this.start();
   }
   
-  getPlayerData(): Tracker {
-    return this.tracker;
+  getPlayerData(): PlayerTrack {
+    return this.playerTrack;
   }
   
   async start(): Promise<void> {
@@ -45,7 +50,7 @@ export default class RNTrackPlayerRepository implements IPlayerRepository {
       ]
     });
 
-    await TrackPlayer.add(this.tracker);
+    await TrackPlayer.add(this.playerTrack);
 
     const playResp = await TrackPlayer.play();
   }

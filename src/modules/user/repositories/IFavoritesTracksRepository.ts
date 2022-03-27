@@ -5,6 +5,11 @@ export interface ISetMusicAsFavoriteDTO {
   music: Track
 } 
 
+export interface ICheckIfIsFavoriteDTO {
+  userKey: string
+  songCode: string
+}
+
 export default interface IFavoritesTracksRepository {
   setMusicAsFavorite(iSetMusicAsFavoriteDTO:ISetMusicAsFavoriteDTO): Promise<boolean>
   getAllFavoritesTracks(userKey:string): Promise<Track[]>
