@@ -1,3 +1,4 @@
+import { SocialAuthProvider } from "../../modules/user/useCases"
 
 export enum USER_ACTION_TYPES {
   SET_USER_DATA = "SET_USER_DATA",
@@ -11,7 +12,7 @@ export type SetUserDataAction = {
   givenName: string
   fullName: string
   photo: string
-  providerId: string
+  providerId: SocialAuthProvider | ""
 }
 
 export type ResetUserDataAction = {

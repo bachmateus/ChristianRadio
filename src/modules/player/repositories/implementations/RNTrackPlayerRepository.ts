@@ -10,7 +10,6 @@ export default class RNTrackPlayerRepository implements IPlayerRepository {
   constructor() {}
   
   async setPlayerData(playerData: PlayerTrack): Promise<void> {
-    console.log(playerData)
     
     if (!playerData.url) 
       return 

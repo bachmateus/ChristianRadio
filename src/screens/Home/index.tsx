@@ -53,7 +53,7 @@ function HomeConnect({userKey}: Props) {
 
     interval.current = setInterval(() => {
       getStationData();
-    }, 500);
+    }, 1000);
   }
   
   const getStationData = async () => {
@@ -67,12 +67,14 @@ function HomeConnect({userKey}: Props) {
       return
     }
 
-    const resCheckIfIsFavorite = await checkIfIsFavorite.execute({
-      userKey,
-      songCode:newCurrentTrack.id
-    });
-  
-    setIsTrackFavorite(resCheckIfIsFavorite);
+    if (userKey !== "") {
+      const resCheckIfIsFavorite = await checkIfIsFavorite.execute({
+        userKey,
+        songCode:newCurrentTrack.id
+      });
+      
+      setIsTrackFavorite(resCheckIfIsFavorite);
+    }
   
     player.setPlayerData(newCurrentTrack)
   
@@ -101,7 +103,6 @@ function HomeConnect({userKey}: Props) {
     });
 
     setIsTrackFavorite(isFavorite);
-    
   }
 
   const handlePrevious = () => {

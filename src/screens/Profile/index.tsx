@@ -3,6 +3,8 @@ import { Button, Image, Modal, Text, View } from "react-native";
 import { connect } from "react-redux";
 
 import SignInConect from "../../components/SignInModal/SignIn";
+import { SocialAuthProvider } from "../../modules/user/useCases";
+import signoutWithSocialProvider from "../../modules/user/useCases/signoutUseCases";
 import { AppReducerTypes } from "../../reducers/types";
 import { resetUserData } from "../../reducers/userReducer/actions";
 
@@ -10,12 +12,15 @@ interface Props {
   name:string
   id:string
   photo:string
+  provider: SocialAuthProvider
   resetUserData:Function
 }
 
-const Profile:FC<Props> = ({name, id, photo, resetUserData}) => {
+const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
   const handleLogout = () => {
+    console.log(provider)
     resetUserData()
+    signoutWithSocialProvider(provider);
   }
   return (
     <View>
@@ -43,6 +48,7 @@ const mapStateToProps = (state: AppReducerTypes) => {
     name: state.userReducer.givenName,
     id: state.userReducer.id,
     photo: state.userReducer.photo,
+    provider: state.userReducer.providerId
   }
 }
 

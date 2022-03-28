@@ -4,14 +4,23 @@ export default class CheckIfIsFavorite {
   constructor(private favoriteTracksRepository: IFavoritesTracksRepository){}
 
   async execute({userKey, songCode}:ICheckIfIsFavoriteDTO): Promise<boolean> {
-    const favoriteTrack = await this.favoriteTracksRepository.getFavoriteTrack(
-      userKey,
-      songCode
-    );
+    try {
 
-    if (favoriteTrack === null) 
+      if (userKey === '') 
       return false
-    else 
-      return true
+      
+      const favoriteTrack = await this.favoriteTracksRepository.getFavoriteTrack(
+        userKey,
+        songCode
+        );
+        
+        if (favoriteTrack === null) 
+        return false
+        else 
+        return true
+    } catch (e) {
+      console.log('error', userKey, e)
+      return false
+    }
   }
 }

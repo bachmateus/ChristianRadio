@@ -1,20 +1,7 @@
-import IAuthenticationRepository from "../../repositories/IAutenticationRepository";
-import * as GoogleAutenticationRepository from "../../repositories/implementations/GoogleAuthenticationRepository";
-
-type SocialAuthProvider = 'Google' | 'Apple';
-
-const getRepositoryInstance = (
-  provider:SocialAuthProvider
-): IAuthenticationRepository => {
-
-  switch (provider) {
-    case "Google":
-      return GoogleAutenticationRepository;
-  }
-}
+import { getAuthRepositoryInstance, SocialAuthProvider } from "..";
 
 const signinWithSocialProvider = async (provider:SocialAuthProvider) => {
-  const repository = getRepositoryInstance(provider);
+  const repository = getAuthRepositoryInstance(provider);
   return await repository.signIn()
 }
 
