@@ -1,12 +1,14 @@
 import React, { FC } from "react"
 import { Button, Image, Modal, Text, View } from "react-native";
 import { connect } from "react-redux";
+import Favorites from "../../components/Favorites";
 
 import SignInConect from "../../components/SignInModal/SignIn";
 import { SocialAuthProvider } from "../../modules/user/useCases";
 import signoutWithSocialProvider from "../../modules/user/useCases/signoutUseCases";
 import { AppReducerTypes } from "../../reducers/types";
 import { resetUserData } from "../../reducers/userReducer/actions";
+import styles from "./styles";
 
 interface Props {
   name:string
@@ -22,23 +24,29 @@ const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
     resetUserData()
     signoutWithSocialProvider(provider);
   }
+
   return (
-    <View>
-      { (id.length > 0) && (
-        <>
-          <Text>name: {name}</Text>
-          <Text>id: {id}</Text>
-          <Image source={{uri:photo}} style={{width: 200, height: 200}}/>
-        </>
-      )}
+    <View 
+      style={[styles.container, styles.contentContainer]}
+    >
+      { (id !== "") && (<>
+        <View style={styles.boxProfile}>
+          <Image source={{uri:photo}} style={styles.profileImage}/>
+
+          <View style={styles.boxProfileInfo}>
+            <Text style={styles.profileName}>{name}</Text>
+            <Button title="Logout" onPress={handleLogout}/>
+          </View>
+        </View>
+      
+        <Favorites />
+      </>)}
 
       <Modal 
         visible={id.length == 0}
       >
         <SignInConect />
       </Modal>
-
-      <Button title="Logout" onPress={handleLogout}/>
     </View>
   )
 }
