@@ -33,9 +33,11 @@ export async function signIn() {
 
 export async function signOut() {
   try {
+    await GoogleSignin.revokeAccess();
     await auth().signOut();
     return true;
   } catch (e) {
-    throw new Error(e);
+    return false;
+    // throw new Error(e);
   }
 }

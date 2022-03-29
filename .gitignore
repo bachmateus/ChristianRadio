@@ -61,3 +61,5 @@ buck-out/
 
 .env
 android/java_pid7032.hprof
+
+pending.txt

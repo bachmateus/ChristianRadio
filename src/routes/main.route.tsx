@@ -1,17 +1,52 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from '../screens/Home';
 import ProfileConect from '../screens/Profile';
 import Favorites from '../screens/Favorites';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const{ Navigator, Screen } = createDrawerNavigator();
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
+
+const{ Navigator, Screen } = createBottomTabNavigator();
 
 export default function MainRoute() {
   return (
-    <Navigator>
-      <Screen name="Playing" component={Home} />
-      <Screen name="Favorites" component={Favorites} />
-      <Screen name="Profile" component={ProfileConect} />
+    <Navigator 
+    initialRouteName='Now Playing'
+    tabBarOptions={{
+      labelPosition: "beside-icon",
+      tabStyle: {
+        backgroundColor: '#080f1f'
+      },
+      activeBackgroundColor: "#fff",
+      activeTintColor: '#fff'
+      
+    }}>
+      
+      <Screen name="Stations" component={Favorites} 
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialIcons name="library-music" size={24} color={color} />
+          )
+        }}
+      />
+
+
+      <Screen name="Now Playing" component={Home} 
+        options={{
+          tabBarIcon: ({color}) => (
+            <Icon name="ios-play-circle-sharp" size={24} color={color} />
+          )
+        }}
+      />
+            
+      <Screen name="Favorites" component={ProfileConect} 
+        options={{
+          tabBarIcon: ({color}) => (
+            <Icon name="heart-sharp" size={24} color={color} />
+          )
+        }}
+      />
     </Navigator>
   );
 }
