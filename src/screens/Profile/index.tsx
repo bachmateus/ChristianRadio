@@ -8,6 +8,7 @@ import { SocialAuthProvider } from "../../modules/user/useCases";
 import signoutWithSocialProvider from "../../modules/user/useCases/signoutUseCases";
 import { AppReducerTypes } from "../../reducers/types";
 import { resetUserData } from "../../reducers/userReducer/actions";
+
 import styles from "./styles";
 
 interface Props {
@@ -20,11 +21,10 @@ interface Props {
 
 const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
   const handleLogout = () => {
-    console.log(provider)
     resetUserData()
     signoutWithSocialProvider(provider);
   }
-
+  // handleLogout()
   return (
     <View 
       style={[styles.container, styles.contentContainer]}

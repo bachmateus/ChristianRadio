@@ -43,8 +43,6 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
 
         return currentData.SongCode.toString() == songCode;
       });
-      // console.log(songCode, favoritesTrack)
-
 
       if (favoritesTrack.length === 0)
         return null
