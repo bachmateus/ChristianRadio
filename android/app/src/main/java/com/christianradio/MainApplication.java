@@ -13,7 +13,8 @@ import java.util.List;
 import com.brentvatne.react.ReactVideoPackage;
 
 import com.facebook.react.bridge.JSIModulePackage; // <- add
-  import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
+import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
+import com.oblador.vectoricons.VectorIconsPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -33,6 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MainReactPackage());
           // packages.add(new ReactVideoPackage());
           // packages.add(new RNGoogleSigninPackage());
+          // packages.add(new VectorIconsPackage());
+          
           
           return packages;
         }

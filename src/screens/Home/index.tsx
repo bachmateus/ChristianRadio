@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image, ImageBackground, Text, View } from "react-native";
 import { connect } from "react-redux";
+import { useNavigation } from '@react-navigation/native';
 
 import Station from "../../modules/station/model/Station";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
@@ -27,6 +28,7 @@ function HomeConnect({userKey}: Props) {
   const [ isPlaying, setIsPlaying ] = useState(true);
   const [ isLoadingData, setIsLoadingData ] = useState(false);
   const [ isTrackFavorite, setIsTrackFavorite ] = useState(false);
+  const navigation = useNavigation();
 
   const [ stations, setStations ] = useState<Station[]>();
   const [ currentStationSelected, setCurrentStationSelected ] = useState<Station>({} as Station);
@@ -90,6 +92,12 @@ function HomeConnect({userKey}: Props) {
   // }
 
   const handleFavorite = async () => {
+
+    if ( !userKey ) {
+      navigation.navigate('Profile')      
+
+      return
+    }
 
     const isFavorite = await toogleMusicFavoriteUseCase().execute({
       userKey,
