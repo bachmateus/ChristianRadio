@@ -24,12 +24,13 @@ const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
     resetUserData()
     signoutWithSocialProvider(provider);
   }
-  // handleLogout()
+  console.log(id.toString())
+
   return (
     <View 
       style={[styles.container, styles.contentContainer]}
     >
-      { (id !== "") && (<>
+      { (id !== undefined && id !== "") && (<>
         <View style={styles.boxProfile}>
           <Image source={{uri:photo}} style={styles.profileImage}/>
 
@@ -43,7 +44,7 @@ const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
       </>)}
 
       <Modal 
-        visible={id.length == 0}
+        visible={id === undefined || id === ""}
       >
         <SignInConect />
       </Modal>

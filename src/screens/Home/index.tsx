@@ -19,19 +19,22 @@ import playerStyles from '../../components/MusicPlayer/styles'
 import { AppReducerTypes } from "../../reducers/types";
 import genericAlbumImg from '../../assets/generic-album.png';
 import styles from "./styles";
+import { setStationData } from '../../reducers/stationReducer/actions';
 
 interface Props {
   userKey: string
+  currentStationSelected: Station
+  setStationData: Function
 }
 
-function HomeConnect({userKey}: Props) {
+function HomeConnect({userKey, currentStationSelected, setStationData}: Props) {
   const [ isPlaying, setIsPlaying ] = useState(true);
   const [ isLoadingData, setIsLoadingData ] = useState(false);
   const [ isTrackFavorite, setIsTrackFavorite ] = useState(false);
   const navigation = useNavigation();
 
   const [ stations, setStations ] = useState<Station[]>();
-  const [ currentStationSelected, setCurrentStationSelected ] = useState<Station>({} as Station);
+  // const [ currentStationSelected, setCurrentStationSelected ] = useState<Station>({} as Station);
   const [ currentTrack, setCurrentTrack ] = useState({} as PlayerTrack)
   const [ player ] = useState( new RNTrackPlayerRepository());
   const interval = useRef<ReturnType<typeof setInterval>>(null);
@@ -41,7 +44,7 @@ function HomeConnect({userKey}: Props) {
     setIsLoadingData(true);
     const stations = await listAllStationUseCase.execute();
     setStations(stations);
-    setCurrentStationSelected(stations![0]);
+    setStationData(stations![0]);
     setIsLoadingData(false);
   }
   
@@ -115,11 +118,11 @@ function HomeConnect({userKey}: Props) {
 
   const handlePrevious = () => {
     const index =  (currentStationSelected.id == 1) ? stations.length - 1 : currentStationSelected.id - 2;
-    setCurrentStationSelected(stations[index]);
+    setStationData(stations[index]);
   }
   const handleNext = () => {
     const index = (currentStationSelected.id === stations.length)  ? 0 : currentStationSelected.id
-    setCurrentStationSelected(stations[index]);
+    setStationData(stations[index]);
   }
 
 
@@ -136,7 +139,7 @@ function HomeConnect({userKey}: Props) {
       <View style={playerStyles.playerMusicInfo}>
         <View>
           <Text style={playerStyles.musicArtistLbl}>
-            You're listening to
+            You're listening to {currentStationSelected.name}
           </Text>
           <Image resizeMode="contain" source={currentStationSelected.logo} 
             style={{ height: 50, maxWidth: 320}} 
@@ -170,9 +173,10 @@ function HomeConnect({userKey}: Props) {
 const mapStateToProps = (state: AppReducerTypes) => {
   return {
     userKey: state.userReducer.id,
+    currentStationSelected: state.stationReducer
   }
 }
 
-const Home = connect(mapStateToProps)(HomeConnect);
+const Home = connect(mapStateToProps, { setStationData })(HomeConnect);
 
 export default Home;

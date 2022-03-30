@@ -7,7 +7,7 @@ import reducers from ".";
 const persistedReducer = persistReducer({
   key:'root',
   storage: AsyncStorage,
-  whitelist:['userReducer']
+  whitelist:['userReducer', 'stationReducer']
 }, reducers);
 
 const store = createStore(persistedReducer, applyMiddleware(ReduxThunk));

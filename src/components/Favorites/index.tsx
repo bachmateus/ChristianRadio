@@ -42,7 +42,7 @@ function FavoritesConnect({userKey}:Props) {
 
   return (
     <View style={styles.container}>
-      { (userKey.length > 0) && (
+      { (userKey !== "") && (
         <FlatList 
           nestedScrollEnabled
           data={favoriteTracks}

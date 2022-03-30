@@ -1,7 +1,7 @@
 import React from 'react';
 import Home from '../screens/Home';
 import ProfileConect from '../screens/Profile';
-import Favorites from '../screens/Favorites';
+import Stations from '../screens/Stations';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -23,7 +23,7 @@ export default function MainRoute() {
       
     }}>
       
-      <Screen name="Stations" component={Favorites} 
+      <Screen name="Stations" component={Stations} 
         options={{
           tabBarIcon: ({color}) => (
             <MaterialIcons name="library-music" size={24} color={color} />
