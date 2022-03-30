@@ -3,7 +3,8 @@ import {
   CHardRock,
   CHits,
   CPpowerPraise,
-  CClassicRock 
+  CClassicRock, 
+  ThisIsPower
 } from "../../../../databases/christianRockStation.data";
 import PlayerTrack from "../../../player/model/PlayerTrack";
 import Station from "../../model/Station";
@@ -77,11 +78,12 @@ export default class ChristianRockRepository implements IStationRepository{
 
   listAll(): Promise<Station[]> {
     const stations:Station[] = [
+      // ThisIsPower,
       CRock,
       CHardRock,
       CHits,
       CPpowerPraise,
-      CClassicRock
+      CClassicRock,
     ];
 
     return new Promise((resolve) => {

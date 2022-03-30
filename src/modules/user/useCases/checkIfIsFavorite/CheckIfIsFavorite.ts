@@ -6,8 +6,8 @@ export default class CheckIfIsFavorite {
   async execute({userKey, songCode}:ICheckIfIsFavoriteDTO): Promise<boolean> {
     try {
 
-      if (userKey === '') 
-      return false
+      if (userKey === undefined) 
+        return false
       
       const favoriteTrack = await this.favoriteTracksRepository.getFavoriteTrack(
         userKey,

@@ -1,10 +1,13 @@
 import React, { FC } from "react";
-import { Button, View } from "react-native";
+import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import signinWithSocialProvider from "../../modules/user/useCases/signinUseCases";
 import { SocialAuthProvider } from "../../modules/user/useCases";
 import { setUserData } from "../../reducers/userReducer/actions";
+import googleLogo from '../../assets/google-logo.png';
+import styles from "./styles";
 
 interface Props {
   setUserData: Function
@@ -15,17 +18,27 @@ const SignIn:FC<Props> = ({ setUserData }) => {
   async function handleSignInButton() {
     try { 
       const userData = await signinWithSocialProvider(SocialAuthProvider.GOOGLE);
-      // console.log(userData)
+
       if (userData)
         setUserData(userData);
-    } catch (e) {
+
+      } catch (e) {
       console.error(e)
     }
   }
 
   return (
-    <View>
-      <Button title="Google" onPress={()=>{handleSignInButton()}} />
+    <View style={styles.container}>
+      <Text style={styles.title}>Welcome to Christian Radio</Text>
+      <Text style={styles.text}>Sign in and save your favorite musics</Text>
+
+      <TouchableOpacity 
+        onPress={()=>{handleSignInButton()}} 
+        style={styles.buttonContainer}
+      >
+        <Image source={googleLogo} style={styles.butttonIcon} />
+        <Text style={styles.buttonText}>Sign in with Google</Text>
+      </TouchableOpacity>
     </View>
   );
 } 

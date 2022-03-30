@@ -44,3 +44,13 @@ CClassicRock.site = "https://www.christianclassicrock.net/";
 CClassicRock.endpoint = "https://www.christianclassicrock.net/iphoneCCRDN.asp";
 CClassicRock.url = "https://shoutcast.christianrock.net/stream/9";
 CClassicRock.logo = require("../assets/CCRDN-logo.png");
+
+export const ThisIsPower = new Station();
+ThisIsPower.id = 0;
+ThisIsPower.stationCode = "TIP";
+ThisIsPower.name = "This Is Power";
+ThisIsPower.site = "https://www.christianclassicrock.net/";
+ThisIsPower.endpoint = "https://www.christianclassicrock.net/iphoneCCRDN.asp";
+ThisIsPower.url = "https://securestreams.reliastream.com:1072/hd#.mp3";
+ThisIsPower.logo = require("../assets/ThisIsPower-logo.png");
+
