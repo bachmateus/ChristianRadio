@@ -90,14 +90,10 @@ function HomeConnect({userKey, currentStationSelected, setStationData}: Props) {
   useEffect(()=>{ onload() },[])
   useEffect(()=>{ onStationChange() }, [currentStationSelected])
 
-  // const handleStationSelected = async (station:Station) => {
-  //   setCurrentStationSelected(station)
-  // }
-
   const handleFavorite = async () => {
 
     if ( !userKey ) {
-      navigation.navigate('Profile')      
+      navigation.navigate('Favorites')      
 
       return
     }

@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { Button, Image, Modal, Text, View } from "react-native";
+import { Button, Image, Text, View } from "react-native";
 import { connect } from "react-redux";
 import Favorites from "../../components/Favorites";
 
@@ -24,8 +24,7 @@ const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
     resetUserData()
     signoutWithSocialProvider(provider);
   }
-  console.log(id.toString())
-
+  
   return (
     <View 
       style={[styles.container, styles.contentContainer]}
@@ -43,11 +42,9 @@ const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
         <Favorites />
       </>)}
 
-      <Modal 
-        visible={id === undefined || id === ""}
-      >
+      { (id === undefined || id === "") && (
         <SignInConect />
-      </Modal>
+      )}
     </View>
   )
 }
