@@ -4,7 +4,7 @@ import IFavoritesTracksRepository, { ISetMusicAsFavoriteDTO } from "../IFavorite
 
 
 export default class DynamodbFavoriteTracksRepository implements IFavoritesTracksRepository {
-  async setMusicAsFavorite(iSetMusicAsFavoriteDTO: ISetMusicAsFavoriteDTO): Promise<boolean> {
+  async setMusicAsFavorite(iSetMusicAsFavoriteDTO: ISetMusicAsFavoriteDTO): Promise<Track> {
     const {Artist, CD, CDCover, SongCode, Title } = iSetMusicAsFavoriteDTO.music;
 
     const data = {
@@ -28,19 +28,16 @@ export default class DynamodbFavoriteTracksRepository implements IFavoritesTrack
     });
     
     const jsonResponse = await createResponse.json();
-    console.log('setMusicAsFavorite', jsonResponse)
 
     return jsonResponse.createResponse;
   }
   async getAllFavoritesTracks(userKey: string): Promise<Track[]> {
-    // return null
     const endpoint = DYNAMODB_URL + 'favorites/' + userKey;
     const listAllResponse = await fetch(endpoint, {
       method: 'get',
     });
     
     const jsonResponse = await listAllResponse.json();
-    console.log('getAllFavoritesTracks', jsonResponse)
 
     return jsonResponse.favorites;
   }
@@ -61,17 +58,17 @@ export default class DynamodbFavoriteTracksRepository implements IFavoritesTrack
       console.error(error)
     }
   }
-  async removeMusicFromFavorite(music: Track): Promise<boolean> {
+  async removeMusicFromFavorite(music: Track): Promise<Track> {
+    
     try {
       const endpoint = DYNAMODB_URL + 'delete-favorite/' + music.id;
       const listAllResponse = await fetch(endpoint, {
-        method: 'delete',
+        method: 'DELETE'
       });
       
       const jsonResponse = await listAllResponse.json();
-      console.log('removeMusicFromFavorite')
 
-      return true;
+      return music;
     } catch (error) {
       console.error(error)
     }

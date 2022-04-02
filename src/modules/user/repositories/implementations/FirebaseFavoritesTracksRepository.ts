@@ -4,31 +4,61 @@ import database from '@react-native-firebase/database';
 import Track from "../../../station/model/Track";
 import IFavoritesTracksRepository, { ISetMusicAsFavoriteDTO } from "../IFavoritesTracksRepository";
 
+const md5 = require('md5');
+
 export default class FirebaseFavoritesTracksRepository implements IFavoritesTracksRepository {
 
-  async setMusicAsFavorite({ userKey, music }: ISetMusicAsFavoriteDTO): Promise<boolean> {
+  async setMusicAsFavorite({ userKey, music }: ISetMusicAsFavoriteDTO): Promise<Track> {
+
     try {
       const newReference = database().ref(FIREBASE_USER_MUSICS).push();
       
-      const saveResp = await newReference
-        .set({ ...music, userKey, createdAt: Date.now() })
+      const newFavorite = { 
+        ...music, 
+        id: md5(`${userKey}-${music.SongCode}`),
+        userKey, 
+        createdAt: Date.now() 
+      };
+
+      const saveResp = await newReference.set(newFavorite)
       
-      return true;
+      return newFavorite;
     } catch (e) {
       throw new Error(e);
     }
   }
 
-  async removeMusicFromFavorite(music: Track): Promise<boolean> {
+  async removeMusicFromFavorite(music: Track): Promise<Track|null> {
+    const favorites = await this.getFavoriteTrackById(music.id);
+
     try {
-      const resp = await database().ref(FIREBASE_USER_MUSICS + music.SongCode).remove();
-
-      return false;
+      favorites.forEach(async favorite => {
+        const resp = await database().ref(FIREBASE_USER_MUSICS + favorite[0]).remove();
+      });
+      return music;
     } catch (e) {
       throw new Error(e);
     }
   }
- 
+  
+  async getFavoriteTrackById(musicId:string) {
+    try {
+      const resp = await database().ref(FIREBASE_USER_MUSICS)
+      .orderByChild('id').equalTo(musicId).once('value');
+      
+      const favoritesResponse = resp.toJSON() as Track[];
+
+      if ( !favoritesResponse)
+        return [];
+        
+      const favorites = Object.entries(favoritesResponse);
+  
+      return favorites;
+    } catch(e) {
+      throw new Error(e);
+    }
+  }
+
   async getFavoriteTrack(userKey: string, songCode: string): Promise<Track> {
     try {
       const allFavorites = await this.getAllFavoritesTracksWithFirebaseKeys(userKey);

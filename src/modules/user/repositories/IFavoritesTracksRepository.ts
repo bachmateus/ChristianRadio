@@ -11,8 +11,8 @@ export interface ICheckIfIsFavoriteDTO {
 }
 
 export default interface IFavoritesTracksRepository {
-  setMusicAsFavorite(iSetMusicAsFavoriteDTO:ISetMusicAsFavoriteDTO): Promise<boolean>
+  setMusicAsFavorite(iSetMusicAsFavoriteDTO:ISetMusicAsFavoriteDTO): Promise<Track>
   getAllFavoritesTracks(userKey:string): Promise<Track[]>
   getFavoriteTrack(userKey: string, songCode: string): Promise<Track|null>
-  removeMusicFromFavorite(music: Track): Promise<boolean>
+  removeMusicFromFavorite(music: Track): Promise<Track|null>
 }

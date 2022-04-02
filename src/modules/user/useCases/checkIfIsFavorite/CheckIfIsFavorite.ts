@@ -14,12 +14,12 @@ export default class CheckIfIsFavorite {
         songCode
         );
         
-        if (favoriteTrack === null) 
+      if (favoriteTrack === null) 
         return false
-        else 
+      else 
         return true
     } catch (e) {
-      console.log('error', userKey, e)
+      console.error('error', userKey, e)
       return false
     }
   }
