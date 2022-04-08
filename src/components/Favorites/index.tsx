@@ -54,6 +54,7 @@ function FavoritesConnect({userKey, favorites, setFavoritesData}:Props) {
     >
       { (userKey !== "") && (
         <FlatList 
+          testID='flatlist-favorites'
           nestedScrollEnabled
           data={favorites}
           renderItem= {({item}) => 
