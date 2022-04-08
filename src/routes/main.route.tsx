@@ -17,7 +17,8 @@ export default function MainRoute() {
       tabBarOptions={{
         labelPosition: "beside-icon",
         tabStyle: {
-          backgroundColor: '#080f1f'
+          backgroundColor: '#080f1f',
+          borderTopWidth:0,
         },
         activeBackgroundColor: "#fff",
         activeTintColor: '#fff'

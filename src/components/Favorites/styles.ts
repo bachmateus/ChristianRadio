@@ -11,16 +11,26 @@ const styles = StyleSheet.create({
   favoriteTitle: {
     color: '#fff',
     fontSize: 20,
-    marginLeft: 20,
+    marginLeft: 15,
     marginBottom: 20,
     fontWeight: "bold"
+  },
+
+  favoriteRenderBackground: {
+    minWidth:100,
+    minHeight:20,
+    paddingVertical:20,
+    margin: 10,
+  },
+  favoriteRenderBackgroundImage: {
+    borderRadius:5
   },
 
   favoriteBox: {
     margin: 10,
     marginBottom: 0,
-    flexDirection: "row",
-    backgroundColor: '#202020',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 10,
     zIndex: 1
   },
@@ -29,17 +39,22 @@ const styles = StyleSheet.create({
    top: 10,
   },
   favoriteImg: {
-    width: 100,
-    height: 100,
-    borderBottomLeftRadius: 10,
-    borderTopLeftRadius: 10,
+    width: 200,
+    height: 200,
+    marginBottom: 20
 
   },
 
   favoriteInfo: {
     justifyContent: "center",
     paddingHorizontal: 15,
+    textAlign: "center",
     width: windowsWidth - 110,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderTopLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    paddingVertical: 15,
+    marginBottom: 10
   },
 
   favoriteEmptyText: {
@@ -52,26 +67,29 @@ const styles = StyleSheet.create({
     width: '100%',
     fontWeight: "bold",
     color: '#fff',
+    textAlign: "center",
   },
   artist: {
-    color: '#8e8e8e'
-
+    color: '#8e8e8e',
+    textAlign: "center",
   },
   favoriteExtendedBox: {
-    backgroundColor: '#202020',
     flexDirection: "row",
-    marginTop:0,
+    justifyContent: "space-evenly",
     marginBottom: 10,
-    paddingTop: 15,
     paddingHorizontal: 10,
-    top: -10,
     zIndex: 0,
+
   },
   favoriteBoxIconBox: {
-    marginRight: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center"
+    marginRight: 20,
+    alignItems: "center",
+    flexDirection: "row",
+    backgroundColor: '#202020',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 30,
+
   },
   favoriteBoxIconBoxRemove: {
     alignSelf: "flex-end",
@@ -80,6 +98,8 @@ const styles = StyleSheet.create({
   favoriteBoxIcons: {
     width: 20,
     height: 20,
+    marginRight: 5
+
   },
 
   /* Unlogged */
