@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Image, ImageBackground, Text, View } from "react-native";
+import { ActivityIndicator, Image, ImageBackground, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 
@@ -72,7 +72,7 @@ function HomeConnect({
   }
   
   async function getStationData () {
-    setIsLoadingData(true);
+    // setIsLoadingData(true);
   
     const getCurrentTrack = getCurrentTrackUseCaseInstance();
     const newCurrentTrack = await getCurrentTrack.execute(currentStationSelected)
@@ -87,21 +87,24 @@ function HomeConnect({
       setIsTrackFavorite(false);
     }
 
+    setIsLoadingData(false);
+
     if (newCurrentTrack.id === currentTrack.id) {
-      setIsLoadingData(false);
       return
     }
   
     player.setPlayerData(newCurrentTrack)
   
     setCurrentTrack(newCurrentTrack)
-    setIsLoadingData(false);
+    // setIsLoadingData(false);
   }
   
   useEffect(()=>{ onload() },[])
   useEffect(()=>{ onStationChange() }, [currentStationSelected, favorites])
 
   const handleFavorite = async () => {
+    setIsLoadingData(true);
+
     if ( !userKey ) {
       navigation.navigate('Favorites')      
       return
@@ -134,14 +137,17 @@ function HomeConnect({
 
       setFavoritesData(newFavorites);
     }
-
+    
+    setIsLoadingData(false);
   }
 
   const handlePrevious = () => {
+    setIsLoadingData(true);
     const index =  (currentStationSelected.id == 1) ? stations.length - 1 : currentStationSelected.id - 2;
     setStationData(stations[index]);
   }
   const handleNext = () => {
+    setIsLoadingData(true);
     const index = (currentStationSelected.id === stations.length)  ? 0 : currentStationSelected.id
     setStationData(stations[index]);
   }
@@ -186,6 +192,12 @@ function HomeConnect({
         handlePlay={handlePlayButtonPress}
         handleNext={handleNext}
       />
+
+    { isLoadingData && (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator color={'#fff'} size="large" />
+      </View>
+    )}
     </ImageBackground>
   );
 }
