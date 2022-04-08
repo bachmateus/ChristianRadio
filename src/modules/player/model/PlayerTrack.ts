@@ -6,4 +6,5 @@ export default class PlayerTrack {
   album?:string = "";
   genre?:string = "";
   artwork:string = "";
+  isFavorite?:boolean = false;
 }

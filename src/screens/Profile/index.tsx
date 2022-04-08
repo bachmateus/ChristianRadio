@@ -1,5 +1,6 @@
 import React, { FC } from "react"
 import { Button, Image, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { connect } from "react-redux";
 import Favorites from "../../components/Favorites";
 
@@ -35,7 +36,13 @@ const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
 
           <View style={styles.boxProfileInfo}>
             <Text style={styles.profileName}>{name}</Text>
-            <Button title="Logout" onPress={handleLogout}/>
+            
+            <TouchableOpacity 
+              onPress={handleLogout}
+              style={styles.logoutButtonContainer}
+            >
+              <Text style={styles.logoutButtonText}>Logout</Text>
+            </TouchableOpacity>
           </View>
         </View>
       

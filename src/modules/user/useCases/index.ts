@@ -1,4 +1,5 @@
 import IAuthenticationRepository from "../repositories/IAutenticationRepository";
+// import DynamodbFavoriteTracksRepository from "../repositories/implementations/DynamodbFavoriteTracksRepository";
 import FirebaseFavoritesTracksRepository from "../repositories/implementations/FirebaseFavoritesTracksRepository";
 import * as GoogleAutenticationRepository from "../repositories/implementations/GoogleAuthenticationRepository";
 
@@ -7,6 +8,7 @@ export enum SocialAuthProvider {
 }
 
 export const tracksRepository = new FirebaseFavoritesTracksRepository();
+// export const tracksRepository = new DynamodbFavoriteTracksRepository();
 
 export const getAuthRepositoryInstance = (
   provider:SocialAuthProvider

@@ -96,7 +96,14 @@ radioBoxImg: {
   height: Math.round(windowWidth * 0.7) - 80,
   opacity: 0.5
 },
-
+loadingContainer: {
+  ...StyleSheet.absoluteFillObject,
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  backgroundColor: 'rgba(0,0,0,0.8)',
+  zIndex: 10
+}
 });
 
 export default styles;

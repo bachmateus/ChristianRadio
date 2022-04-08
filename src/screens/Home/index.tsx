@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Image, ImageBackground, Text, View } from "react-native";
+import { ActivityIndicator, Image, ImageBackground, Text, View } from "react-native";
 import { connect } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 
 import Station from "../../modules/station/model/Station";
+import Track from "../../modules/station/model/Track";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
 import listAllStationUseCase from "../../modules/station/useCases/listAllStation";
 
@@ -11,30 +12,39 @@ import PlayerTrack from "../../modules/player/model/PlayerTrack";
 import RNTrackPlayerRepository from "../../modules/player/repositories/implementations/RNTrackPlayerRepository";
 
 import toogleMusicFavoriteUseCase from "../../modules/user/useCases/toogleMusicFavoriteUseCase";
-import checkIfIsFavorite from "../../modules/user/useCases/checkIfIsFavorite";
 
 import MusicPlayer from "../../components/MusicPlayer";
 import playerStyles from '../../components/MusicPlayer/styles'
 
+import { setStationData } from '../../reducers/stationReducer/actions';
+import { setFavoritesData } from "../../reducers/favoritesReducer/actions";
 import { AppReducerTypes } from "../../reducers/types";
+
 import genericAlbumImg from '../../assets/generic-album.png';
 import styles from "./styles";
-import { setStationData } from '../../reducers/stationReducer/actions';
 
 interface Props {
   userKey: string
   currentStationSelected: Station
+  favorites: Track[]
   setStationData: Function
+  setFavoritesData: Function
 }
 
-function HomeConnect({userKey, currentStationSelected, setStationData}: Props) {
+function HomeConnect({
+  userKey, 
+  currentStationSelected, 
+  favorites,
+  setStationData,
+  setFavoritesData,
+}: Props) {
+
   const [ isPlaying, setIsPlaying ] = useState(true);
   const [ isLoadingData, setIsLoadingData ] = useState(false);
   const [ isTrackFavorite, setIsTrackFavorite ] = useState(false);
   const navigation = useNavigation();
 
   const [ stations, setStations ] = useState<Station[]>();
-  // const [ currentStationSelected, setCurrentStationSelected ] = useState<Station>({} as Station);
   const [ currentTrack, setCurrentTrack ] = useState({} as PlayerTrack)
   const [ player ] = useState( new RNTrackPlayerRepository());
   const interval = useRef<ReturnType<typeof setInterval>>(null);
@@ -57,48 +67,50 @@ function HomeConnect({userKey, currentStationSelected, setStationData}: Props) {
     clearInterval(interval.current);
 
     interval.current = setInterval(() => {
-      getStationData();
+    getStationData();
     }, 1000);
   }
   
-  const getStationData = async () => {
-    setIsLoadingData(true);
+  async function getStationData () {
+    // setIsLoadingData(true);
   
     const getCurrentTrack = getCurrentTrackUseCaseInstance();
     const newCurrentTrack = await getCurrentTrack.execute(currentStationSelected)
-    
-    if (newCurrentTrack.id === currentTrack.id) {
-      setIsLoadingData(false);
-      return
+
+    if (favorites.length > 0) {
+      const resCheckIfIsFavorite = favorites.some( 
+        favorite => favorite.SongCode === newCurrentTrack.id
+      );
+
+      setIsTrackFavorite(resCheckIfIsFavorite);
+    } else {
+      setIsTrackFavorite(false);
     }
 
-    if (userKey !== "") {
-      const resCheckIfIsFavorite = await checkIfIsFavorite.execute({
-        userKey,
-        songCode:newCurrentTrack.id
-      });
-      
-      setIsTrackFavorite(resCheckIfIsFavorite);
+    setIsLoadingData(false);
+
+    if (newCurrentTrack.id === currentTrack.id) {
+      return
     }
   
     player.setPlayerData(newCurrentTrack)
   
     setCurrentTrack(newCurrentTrack)
-    setIsLoadingData(false);
+    // setIsLoadingData(false);
   }
   
   useEffect(()=>{ onload() },[])
-  useEffect(()=>{ onStationChange() }, [currentStationSelected])
+  useEffect(()=>{ onStationChange() }, [currentStationSelected, favorites])
 
   const handleFavorite = async () => {
+    setIsLoadingData(true);
 
     if ( !userKey ) {
       navigation.navigate('Favorites')      
-
       return
     }
-
-    const isFavorite = await toogleMusicFavoriteUseCase().execute({
+    
+    const favoriteResponse = await toogleMusicFavoriteUseCase().execute({
       userKey,
       music: {
         Artist: currentTrack.artist,
@@ -106,21 +118,39 @@ function HomeConnect({userKey, currentStationSelected, setStationData}: Props) {
         CDCover: currentTrack.artwork,
         SongCode: currentTrack.id,
         Title: currentTrack.title
-      }
+      },
+      favoriteList:favorites
     });
+    
 
-    setIsTrackFavorite(isFavorite);
+    if (favoriteResponse.isFavorite) {
+      const newFavorites = [
+        ...favorites,
+        favoriteResponse.data
+      ];
+
+      setFavoritesData(newFavorites);
+    } else {
+      const newFavorites = favorites.filter(
+        fav => fav.id !== favoriteResponse.data.id 
+      );
+
+      setFavoritesData(newFavorites);
+    }
+    
+    setIsLoadingData(false);
   }
 
   const handlePrevious = () => {
+    setIsLoadingData(true);
     const index =  (currentStationSelected.id == 1) ? stations.length - 1 : currentStationSelected.id - 2;
     setStationData(stations[index]);
   }
   const handleNext = () => {
+    setIsLoadingData(true);
     const index = (currentStationSelected.id === stations.length)  ? 0 : currentStationSelected.id
     setStationData(stations[index]);
   }
-
 
   return ( 
     <ImageBackground 
@@ -162,6 +192,12 @@ function HomeConnect({userKey, currentStationSelected, setStationData}: Props) {
         handlePlay={handlePlayButtonPress}
         handleNext={handleNext}
       />
+
+    { isLoadingData && (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator color={'#fff'} size="large" />
+      </View>
+    )}
     </ImageBackground>
   );
 }
@@ -169,10 +205,11 @@ function HomeConnect({userKey, currentStationSelected, setStationData}: Props) {
 const mapStateToProps = (state: AppReducerTypes) => {
   return {
     userKey: state.userReducer.id,
-    currentStationSelected: state.stationReducer
+    currentStationSelected: state.stationReducer,
+    favorites: state.favoritesReducer
   }
 }
 
-const Home = connect(mapStateToProps, { setStationData })(HomeConnect);
+const Home = connect(mapStateToProps, { setStationData, setFavoritesData })(HomeConnect);
 
 export default Home;

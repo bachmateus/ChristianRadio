@@ -5,8 +5,15 @@ const windowsWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // height: 400,
     backgroundColor: '#0c0c0c',
+  },
+
+  favoriteTitle: {
+    color: '#fff',
+    fontSize: 20,
+    marginLeft: 20,
+    marginBottom: 20,
+    fontWeight: "bold"
   },
 
   favoriteBox: {
@@ -16,13 +23,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#202020',
     borderRadius: 10,
     zIndex: 1
-
-    // width: windowsWidth - 80
   },
   favoriteBoxArrow: {
    right: 10,
    top: 10,
-  //  bottom:0 
   },
   favoriteImg: {
     width: 100,
@@ -33,20 +37,21 @@ const styles = StyleSheet.create({
   },
 
   favoriteInfo: {
-    // flexDirection: "row",
-    // flexWrap: "wrap",
     justifyContent: "center",
-    // justifyContent: "space-around",
     paddingHorizontal: 15,
     width: windowsWidth - 110,
   },
+
+  favoriteEmptyText: {
+    color:'#fff', 
+    marginLeft: 20
+  },
+
   title: {
     fontSize: 20,
     width: '100%',
     fontWeight: "bold",
     color: '#fff',
-    // backgroundColor: "#f00",
-
   },
   artist: {
     color: '#8e8e8e'
@@ -55,7 +60,6 @@ const styles = StyleSheet.create({
   favoriteExtendedBox: {
     backgroundColor: '#202020',
     flexDirection: "row",
-    // justifyContent: "flex-end",
     marginTop:0,
     marginBottom: 10,
     paddingTop: 15,
@@ -65,7 +69,6 @@ const styles = StyleSheet.create({
   },
   favoriteBoxIconBox: {
     marginRight: 10,
-    // width: 50,
     height: 50,
     justifyContent: "center",
     alignItems: "center"
@@ -73,8 +76,6 @@ const styles = StyleSheet.create({
   favoriteBoxIconBoxRemove: {
     alignSelf: "flex-end",
     alignContent: "flex-end",
-    
-    // alignSelf: "flex-end"
   },
   favoriteBoxIcons: {
     width: 20,
@@ -89,7 +90,14 @@ const styles = StyleSheet.create({
   loginButtonLabel: {
 
   },
-
+  loadingContainer: {
+    ...StyleSheet.absoluteFillObject,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: 'rgba(0,0,0,0.8)',
+    zIndex: 10
+  }
 });
 
 export default styles;

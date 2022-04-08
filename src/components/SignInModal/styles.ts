@@ -28,17 +28,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#004ffa',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 2,
+    borderRadius: 8,
     minWidth: 240
-  },
-  butttonIcon: {
-    width: 40,
-    height: 40,
-    marginRight: 15
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
+    marginLeft: 10,
   },
 });
 
