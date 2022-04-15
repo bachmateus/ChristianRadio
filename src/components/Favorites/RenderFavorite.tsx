@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Linking, Text, TouchableOpacity, View } from "react-native"
+import { Image, Linking, Text, TouchableOpacity, View, ImageBackground } from "react-native"
 
 import Track from "../../modules/station/model/Track"
 import styles from "./styles"
@@ -31,7 +31,13 @@ export default function RenderFavorite({
   }
 
   return (
-    <View>
+    <ImageBackground 
+      imageStyle={styles.favoriteRenderBackgroundImage}
+      style={styles.favoriteRenderBackground}
+      blurRadius={50} 
+      resizeMethod="scale" 
+      source={{uri:item.CDCover}}
+    >
       <View style={styles.favoriteBox}>
         <Image 
           source={{uri:item.CDCover}} 
@@ -43,12 +49,6 @@ export default function RenderFavorite({
           <Text style={styles.artist}>Artist * {item.Artist}</Text>
           <Text style={styles.artist}>Album * {item.CD}</Text>
         </View>
-
-        {/* <ArrowButton 
-          onPress={ handleArrowPress }
-          isTurned={!showDetails}
-          styles={styles.favoriteBoxArrow}
-        /> */}
       </View>
 
       <View style={{...styles.favoriteBox, ...styles.favoriteExtendedBox}}>
@@ -70,6 +70,6 @@ export default function RenderFavorite({
           <Text  style={styles.artist}>Remove</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
