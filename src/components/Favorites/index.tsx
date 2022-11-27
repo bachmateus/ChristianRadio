@@ -21,10 +21,11 @@ interface Props {
 
 function FavoritesConnect({userKey, favorites, setFavoritesData}:Props) {
   const [ isRefreshing, setIsRefreshing ] = useState(false);
-  const [ isRemoving, setIsRemoving ] = useState(true);
+  const [ isRemoving, setIsRemoving ] = useState(false);
+  // const [ isRemoving, setIsRemoving ] = useState(true);
   
   const handleRemoveFromFavorite = async (track: Track) => {
-    setIsRemoving(true);
+    // setIsRemoving(true);
 
     await toogleMusicFavoriteUseCase().execute({
       userKey,
@@ -36,22 +37,24 @@ function FavoritesConnect({userKey, favorites, setFavoritesData}:Props) {
   }
 
   const onload = async () => {
-    setIsRefreshing(true);
+    // setIsRefreshing(true);
 
-    if (!userKey) 
-      return
+    // if (!userKey) 
+      // return
     
     const tracks = await listFavoriteTracksUseCase.execute(userKey);
+    console.log(tracks);
     setFavoritesData(tracks);
-    setIsRefreshing(false);
-    setIsRemoving(false);
+    // setIsRefreshing(false);
+    // setIsRemoving(false);
   }
 
   useEffect(()=>{
+    // console.log(favorites)
       onload();
   },[])
 
-  return (<>
+return (<>
     <RefreshControl 
       style={styles.container}
       refreshing={isRefreshing}

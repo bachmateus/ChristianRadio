@@ -11,6 +11,7 @@ GoogleSignin.configure({
 export async function signIn() {
   try {
     const {idToken} = await GoogleSignin.signIn();
+    // const idToken='0';
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     const userData: FirebaseAuthTypes.UserCredential = await auth().signInWithCredential(googleCredential);
@@ -24,6 +25,8 @@ export async function signIn() {
       photo: userData.user.photoURL,
       providerId: userData.additionalUserInfo.providerId
     });
+
+    console.log(user)
     
     return user;
   } catch(e) {
@@ -33,7 +36,7 @@ export async function signIn() {
 
 export async function signOut() {
   try {
-    await GoogleSignin.revokeAccess();
+    // await GoogleSignin.revokeAccess();
     await auth().signOut();
     return true;
   } catch (e) {

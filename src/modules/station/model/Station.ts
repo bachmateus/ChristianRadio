@@ -8,4 +8,5 @@ export default class Station {
   url: string
   endpoint: string
   logo: Readonly<ImageProps>
+  thumb: Readonly<ImageProps>
 }

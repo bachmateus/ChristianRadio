@@ -7,6 +7,8 @@ import { AppReducerTypes } from '../../reducers/types';
 import RenderStation from './RenderStation';
 import styles from './styles';
 import { setStationData } from '../../reducers/stationReducer/actions';
+import { useCurrentTrack } from '../../hooks';
+import { stationsList } from '../../databases/playlist-data';
 
 
 interface Props {
@@ -16,6 +18,7 @@ interface Props {
 
 function StationsConnect({station, setStationData}: Props) {
   const [ stations, setStations ] = useState<Station[]>();
+  const stationIndex = useCurrentTrack().index;
   
   const onload = async () => {
     const stations = await listAllStationUseCase.execute();
@@ -33,11 +36,11 @@ function StationsConnect({station, setStationData}: Props) {
   return (
     <View style={styles.container}>
       <FlatList 
-        data={stations}
-        renderItem={ ({item}) => 
+        data={stationsList as Station[]}
+        renderItem={ ({item, index}) => 
           <RenderStation 
             station={item} 
-            isBeginPlayed={item.id === station.id}
+            isBeginPlayed={index === stationIndex}
             handleStationSelected={() => handleStationSelected(item)}
           />
         }

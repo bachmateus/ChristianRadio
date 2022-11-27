@@ -48,6 +48,6 @@ import { render } from '@testing-library/react-native';
   //    />
   //  );
 
-   console.log(component.debug())
+  //  console.log(component.debug())
  });
  

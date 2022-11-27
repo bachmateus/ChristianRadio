@@ -1,4 +1,4 @@
-import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
+import TrackPlayer, { Capability, usePlaybackState } from 'react-native-track-player';
 
 import PlayerTrack from "../../model/PlayerTrack";
 import IPlayerRepository from "../IPlayerRepository";
@@ -10,20 +10,20 @@ export default class RNTrackPlayerRepository implements IPlayerRepository {
   constructor() {}
   
   async setPlayerData(playerData: PlayerTrack): Promise<void> {
-    
-    if (!playerData.url) 
-      return 
+    return
+    // if (!playerData.url) 
+    //   return 
 
-    const stationHasChanged = this.playerTrack.url != playerData.url;
+    // const stationHasChanged = this.playerTrack.url != playerData.url;
 
-    this.playerTrack.id = playerData.id;
-    this.playerTrack.url = playerData.url;
-    this.playerTrack.title = playerData.title;
-    this.playerTrack.artist = playerData.artist;
-    this.playerTrack.artwork = playerData.artwork;
+    // this.playerTrack.id = playerData.id;
+    // this.playerTrack.url = playerData.url;
+    // this.playerTrack.title = playerData.title;
+    // this.playerTrack.artist = playerData.artist;
+    // this.playerTrack.artwork = playerData.artwork;
 
-    if (stationHasChanged)
-      await this.start();
+    // if (stationHasChanged)
+    //   await this.start();
   }
   
   getPlayerData(): PlayerTrack {
@@ -31,37 +31,39 @@ export default class RNTrackPlayerRepository implements IPlayerRepository {
   }
   
   async start(): Promise<void> {
-    await TrackPlayer.reset();
-    
-    await TrackPlayer.setupPlayer({});
+    // await TrackPlayer.reset();
+    console.log('start')
+    await TrackPlayer.setupPlayer();
 
     await TrackPlayer.updateOptions({
-      stopWithApp: true,
-      alwaysPauseOnInterruption: true,
+      // c
+      // stopWithApp: true,
+      // alwaysPauseOnInterruption: true,
       capabilities: [
-        TrackPlayer.CAPABILITY_PLAY,
-        TrackPlayer.CAPABILITY_PAUSE,
-        TrackPlayer.CAPABILITY_STOP,
+        Capability.Play,
+        Capability.Stop,
+        Capability.Pause
       ],
-      compactCapabilities: [
-        TrackPlayer.CAPABILITY_PLAY,
-        TrackPlayer.CAPABILITY_PAUSE,
-        TrackPlayer.CAPABILITY_STOP,
-      ]
+      // compactCapabilities: [
+        // TrackPlayer.CAPABILITY_PLAY,
+        // TrackPlayer.CAPABILITY_PAUSE,
+        // TrackPlayer.CAPABILITY_STOP,
+      // ]
     });
 
-    await TrackPlayer.add(this.playerTrack);
+    // await TrackPlayer.add(this.playerTrack);
 
-    const playResp = await TrackPlayer.play();
+    // const playResp = await TrackPlayer.play();
   }
   
   async togglePlay(isPlaying:boolean): Promise<boolean> {
     const currentTrack = await TrackPlayer.getCurrentTrack();
     
     if ( currentTrack === null) {
-      this.start();
+      await this.start();
       return true;
     }
+    // await TrackPlayer.setupPlayer({});
 
     if (isPlaying) {
       await TrackPlayer.play();

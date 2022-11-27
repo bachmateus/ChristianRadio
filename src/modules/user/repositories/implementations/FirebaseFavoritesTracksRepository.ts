@@ -25,10 +25,12 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
       return newFavorite;
     } catch (e) {
       throw new Error(e);
+      // throw new Error('Method setMusicAsFavorite not implemented');
     }
   }
 
   async removeMusicFromFavorite(music: Track): Promise<Track|null> {
+      // throw new Error('Method removeMusicFromFavorite not implemented');
     const favorites = await this.getFavoriteTrackById(music.id);
 
     try {
@@ -42,7 +44,9 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
   }
   
   async getFavoriteTrackById(musicId:string) {
-    try {
+    // throw new Error('Method getFavoriteTrackById not implemented');
+  
+      try {
       const resp = await database().ref(FIREBASE_USER_MUSICS)
       .orderByChild('id').equalTo(musicId).once('value');
       
@@ -84,9 +88,12 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
     } catch (e) {
       throw new Error(e);
     }
+    // throw new Error('Method getFavoriteTrack not implemented');
+
   }
 
   async getAllFavoritesTracksWithFirebaseKeys(userKey: string): Promise<Track[]> {
+    // throw new Error('Method getAllFavoritesTracksWithFirebaseKeys not implemented');
     try {
       const resp = await database().ref(FIREBASE_USER_MUSICS)
       .orderByChild('userKey').equalTo(userKey).once('value');
@@ -100,6 +107,7 @@ export default class FirebaseFavoritesTracksRepository implements IFavoritesTrac
   }
 
   async getAllFavoritesTracks(userKey:string): Promise<Track[]> {
+    // throw new Error('Method getAllFavoritesTracks not implemented');
     try {
       const allFavorites = await this.getAllFavoritesTracksWithFirebaseKeys(userKey);
       
