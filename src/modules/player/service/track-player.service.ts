@@ -5,7 +5,7 @@ import TrackPlayer, {
   State,
   usePlaybackState,
 } from "react-native-track-player";
-import { playlistData } from '../../databases/playlist-data';
+import { playlistData } from '../../station/databases/playlist-data';
 // import { playlistData } from '../../databases/playlist-data/christian-rock-station.data';
 // import { playlistData } from "../../databases/playlist-data";
 

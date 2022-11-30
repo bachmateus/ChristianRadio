@@ -1,4 +1,6 @@
-import Station from "../../modules/station/model/Station"
+import Station from "../../model/Station"
+
+const ASSETS_PATH = '../../../../assets';
 
 export const christianRockDotNetStations: Station[] = [
   {
@@ -8,8 +10,8 @@ export const christianRockDotNetStations: Station[] = [
     site: "https://www.christianrock.net/",
     endpoint: "https://www.christianrock.net/iphoneCRDN.asp",
     url: "https://shoutcast.christianrock.net/stream/1",
-    logo: require('../../assets/CRDN-logo.png'),
-    thumb: require('../../assets/CRDN-logo.png'),
+    logo: require(`${ASSETS_PATH}/CRDN-logo.png`),
+    thumb: require(`${ASSETS_PATH}/CRDN-logo.png`),
   },
   {
     id: 2,
@@ -18,8 +20,8 @@ export const christianRockDotNetStations: Station[] = [
     site: "https://www.christianhardrock.net/",
     endpoint: "https://www.christianhardrock.net/iphoneCHRDN.asp",
     url: "https://shoutcast.christianrock.net/stream/3",
-    logo: require("../../assets/CHRDN-logo.png"),
-    thumb: require("../../assets/CHRDN-logo.png"),
+    logo: require(`${ASSETS_PATH}/CHRDN-logo.png`),
+    thumb: require(`${ASSETS_PATH}/CHRDN-logo.png`),
   },
   {
     id: 3,
@@ -28,8 +30,8 @@ export const christianRockDotNetStations: Station[] = [
     site: "https://www.christianhits.net/",
     endpoint: "https://www.christianhits.net/iphoneCHDN.asp",
     url: "https://shoutcast.christianrock.net/stream/5",
-    logo: require("../../assets/CHDN-logo.png"),
-    thumb: require("../../assets/CHDN-logo.png"),
+    logo: require(`${ASSETS_PATH}/CHDN-logo.png`),
+    thumb: require(`${ASSETS_PATH}/CHDN-logo.png`),
   },
   {
     id: 4,
@@ -38,8 +40,8 @@ export const christianRockDotNetStations: Station[] = [
     site: "https://www.christianpowerpraise.net/",
     endpoint: "https://www.christianpowerpraise.net/iphoneCPPDN.asp",
     url: "https://shoutcast.christianrock.net/stream/7",
-    logo: require("../../assets/CPPDN-logo.png"),
-    thumb: require("../../assets/CPPDN-logo.png"),
+    logo: require(`${ASSETS_PATH}/CPPDN-logo.png`),
+    thumb: require(`${ASSETS_PATH}/CPPDN-logo.png`),
   },
   {
     id: 5,
@@ -48,7 +50,7 @@ export const christianRockDotNetStations: Station[] = [
     site: "https://www.christianclassicrock.net/",
     endpoint: "https://www.christianclassicrock.net/iphoneCCRDN.asp",
     url: "https://shoutcast.christianrock.net/stream/9",
-    logo: require("../../assets/CCRDN-logo.png"),
-    thumb: require("../../assets/CCRDN-logo.png"),
+    logo: require(`${ASSETS_PATH}/CCRDN-logo.png`),
+    thumb: require(`${ASSETS_PATH}/CCRDN-logo.png`),
   }
 ];

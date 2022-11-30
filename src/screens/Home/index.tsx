@@ -12,8 +12,8 @@ import playerStyles from '../../components/MusicPlayer/styles'
 // TODO: alterar a imagem genérica
 import genericAlbumImg from '../../assets/generic-album.png';
 import styles from "./styles";
-import { useCurrentTrack } from "../../hooks";
-import { playlistData, stationsList } from "../../databases/playlist-data";
+import { useCurrentTrack } from "../../modules/player/hooks";
+import { playlistData, stationsList } from "../../modules/station/databases/playlist-data";
 
 export default function Home() {
   const [ currentTrack, setCurrentTrack ] = useState({} as PlayerTrack)

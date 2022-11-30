@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { State, usePlaybackState } from 'react-native-track-player';
 import { playerIcons } from '../../../assets/icons';
-import { useOnTogglePlayback } from '../../../hooks';
+import { useOnTogglePlayback } from '../../../modules/player/hooks';
 import styles from '../styles';
 import Button from './Button';
 

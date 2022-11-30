@@ -1,4 +1,4 @@
-import { stationsList } from "../../../../databases/playlist-data";
+import { stationsList } from "../../databases/playlist-data";
 import PlayerTrack from "../../../player/model/PlayerTrack";
 import Station from "../../model/Station";
 import Track from "../../model/Track";

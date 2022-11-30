@@ -7,8 +7,8 @@ import { AppReducerTypes } from '../../reducers/types';
 import RenderStation from './RenderStation';
 import styles from './styles';
 import { setStationData } from '../../reducers/stationReducer/actions';
-import { useCurrentTrack } from '../../hooks';
-import { stationsList } from '../../databases/playlist-data';
+import { useCurrentTrack } from '../../modules/player/hooks';
+import { stationsList } from '../../modules/station/databases/playlist-data';
 
 
 interface Props {

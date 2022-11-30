@@ -6,7 +6,7 @@ import { store, persistor } from './src/reducers/store';
 
 import Routes from './src/routes';
 import TrackPlayer from 'react-native-track-player';
-import TrackPlayerService from './src/services/track-player-service/track-player.service';
+import TrackPlayerService from './src/modules/player/service/track-player.service';
 
 const App = () => {
   const [isPlayerReady, setIsPlayerReady] = useState<boolean>(false);

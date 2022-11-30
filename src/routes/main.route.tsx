@@ -29,13 +29,13 @@ export default function MainRoute() {
       // }}
     >
       
-      <Screen name="Stations" component={Stations} 
+      {/* <Screen name="Stations" component={Stations} 
         options={{
           tabBarIcon: ({color}) => (
             <MaterialIcons name="library-music" size={24} color={color} />
           )
         }}
-      />
+      /> */}
 
 
       <Screen name="Now Playing" component={Home} 
