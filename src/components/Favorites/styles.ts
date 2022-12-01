@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
   favoriteBoxIcons: {
     width: 20,
     height: 20,
-    marginRight: 5
-
+    marginRight: 5,
+    color: '#8e8e8e'
   },
 
   /* Unlogged */

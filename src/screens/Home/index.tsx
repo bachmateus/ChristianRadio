@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Image, ImageBackground, Text, View } from "react-native";
 
-import Station from "../../modules/station/model/Station";
+// import Station from "../../modules/station/model/Station";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
 
 import PlayerTrack from "../../modules/player/model/PlayerTrack";
@@ -13,7 +13,7 @@ import playerStyles from '../../components/MusicPlayer/styles'
 import genericAlbumImg from '../../assets/generic-album.png';
 import styles from "./styles";
 import { useCurrentTrack } from "../../modules/player/hooks";
-import { playlistData, stationsList } from "../../modules/station/databases/playlist-data";
+import { stationsList } from "../../modules/station/databases/playlist-data";
 
 export default function Home() {
   const [ currentTrack, setCurrentTrack ] = useState({} as PlayerTrack)
@@ -59,7 +59,7 @@ export default function Home() {
           <Text style={playerStyles.musicArtistLbl}>
             You're listening to {track?.name}
           </Text>
-          <Image resizeMode="contain" source={track?.artwork} 
+          <Image resizeMode="contain" source={stationsList[index].logo} 
             style={{ height: 50, maxWidth: 320}} 
           />
         </View>

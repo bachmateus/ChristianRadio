@@ -1,12 +1,10 @@
 import React from 'react';
 import { Image, Linking, Text, TouchableOpacity, View, ImageBackground } from "react-native"
+import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Track from "../../modules/station/model/Track"
 import styles from "./styles"
-
-import spotifyImg from '../../assets/spotify.png';
-import youtubeImg from '../../assets/youtube.png';
-import removeImg from '../../assets/remove.png';
 
 interface RenderFavoriteProps {
   item:Track
@@ -53,12 +51,12 @@ export default function RenderFavorite({
 
       <View style={{...styles.favoriteBox, ...styles.favoriteExtendedBox}}>
         <TouchableOpacity style={styles.favoriteBoxIconBox} onPress={() => openLink(searchLinks.spotify)}>
-          <Image source={spotifyImg} style={styles.favoriteBoxIcons} /> 
+        <MaterialCommunityIcons style={styles.favoriteBoxIcons} name="spotify" size={styles.favoriteBoxIcons.width} color={styles.favoriteBoxIcons.color} />
           <Text  style={styles.artist}>Spotify</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.favoriteBoxIconBox} onPress={() => openLink(searchLinks.youtube)}>
-          <Image source={youtubeImg} style={styles.favoriteBoxIcons} /> 
+          <Icon style={styles.favoriteBoxIcons} name="logo-youtube" size={styles.favoriteBoxIcons.width} color={styles.favoriteBoxIcons.color} />
           <Text  style={styles.artist}>YouTube</Text>
         </TouchableOpacity>
 
@@ -66,8 +64,8 @@ export default function RenderFavorite({
           style={[styles.favoriteBoxIconBox, styles.favoriteBoxIconBoxRemove]} 
           onPress={()=>handleRemoveFromFavorite(item)}
         >
-          <Image source={removeImg} style={styles.favoriteBoxIcons} /> 
-          <Text  style={styles.artist}>Remove</Text>
+          <Icon style={styles.favoriteBoxIcons} name="ios-remove-circle" size={styles.favoriteBoxIcons.width} color={styles.favoriteBoxIcons.color} />
+          <Text style={styles.artist}>Remove</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
