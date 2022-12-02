@@ -43,7 +43,6 @@ function FavoritesConnect({userKey, favorites, setFavoritesData}:Props) {
       // return
     
     const tracks = await listFavoriteTracksUseCase.execute(userKey);
-    console.log(tracks);
     setFavoritesData(tracks);
     // setIsRefreshing(false);
     // setIsRemoving(false);

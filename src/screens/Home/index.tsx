@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Image, ImageBackground, Text, View } from "react-native";
+import { ActivityIndicator, Image, ImageBackground, ImageSourcePropType, Text, View } from "react-native";
 
 // import Station from "../../modules/station/model/Station";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
@@ -17,7 +17,7 @@ import { stationsList } from "../../modules/station/databases/playlist-data";
 
 export default function Home() {
   const [ currentTrack, setCurrentTrack ] = useState({} as PlayerTrack)
-  const interval = useRef<ReturnType<typeof setInterval>>(null);
+  const interval = useRef<ReturnType<typeof setInterval>>();
   const {index, track} = useCurrentTrack();
 
   // TODO: implement loading
@@ -47,6 +47,8 @@ export default function Home() {
     ? {uri:currentTrack.artwork}
     : genericAlbumImg;
 
+  const stationLogo = (!index ? stationsList[0].logo : stationsList[index].logo) as ImageSourcePropType;
+
   return ( 
     <ImageBackground 
       style={styles.container} imageStyle={styles.containerBackground}
@@ -59,7 +61,7 @@ export default function Home() {
           <Text style={playerStyles.musicArtistLbl}>
             You're listening to {track?.name}
           </Text>
-          <Image resizeMode="contain" source={stationsList[index].logo} 
+          <Image resizeMode="contain" source={stationLogo} 
             style={{ height: 50, maxWidth: 320}} 
           />
         </View>

@@ -57,8 +57,6 @@ function FavoriteButtonComponent({ currentTrack, favorites, userKey, setFavorite
   }
 
   const favoriteIcon = useMemo(()=>{
-    console.log('favoriteIcon', currentTrack.id)
-    console.log('favorites', favorites)
     if (favorites.length > 0) {
       const resCheckIfIsFavorite = favorites.some( favorite => favorite.SongCode === currentTrack.id);
       return resCheckIfIsFavorite ? playerIcons.favorite : playerIcons.notFavorite

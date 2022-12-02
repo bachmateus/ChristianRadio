@@ -6,7 +6,7 @@ import styles from '../styles';
 export default function PlayerMusicInfo(props: {track: PlayerTrack}) {
   return (
     <View style={styles.playerMusicInfo}>
-      <View>
+      <View style={styles.musicInfoBox}>
         <Text style={styles.musicTitleLbl}>
           { props.track.title !== ""  ? props.track.title : "Loading..."}
         </Text>
