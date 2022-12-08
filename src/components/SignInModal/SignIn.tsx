@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 // import Icon from 'react-native-vector-icons/Ionicons';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import signinWithSocialProvider from "../../modules/user/useCases/signinUseCases";
 import { SocialAuthProvider } from "../../modules/user/useCases";
@@ -37,7 +37,7 @@ const SignIn:FC<Props> = ({ setUserData }) => {
         onPress={()=>{handleSignInButton()}} 
         style={styles.buttonContainer}
       >
-        {/* <AntDesign name="google" size={40} color="#fff" /> */}
+        <AntDesign name="google" size={40} color="#fff" />
         {/* <Image source={googleLogo} style={styles.butttonIcon} /> */}
         <Text style={styles.buttonText}>Sign in with Google</Text>
       </TouchableOpacity>
