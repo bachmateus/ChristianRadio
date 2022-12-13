@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Button, Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Alert } from "react-native";
 import { connect } from "react-redux";
 // import Icon from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -23,7 +23,8 @@ const SignIn:FC<Props> = ({ setUserData }) => {
       if (userData)
         setUserData(userData);
 
-      } catch (e) {
+    } catch (e) {
+      Alert.alert('Something went wrong');
       console.error(e)
     }
   }
