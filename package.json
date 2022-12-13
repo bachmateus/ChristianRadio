@@ -9,7 +9,8 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "build:apk": "cd android && gradlew assembleRelease && cd app/build/outputs/apk/release && explorer .",
-    "build:open": "cd android/app/build/outputs/apk/release && explorer ."
+    "build:open": "cd android/app/build/outputs/apk/release && explorer .",
+    "build:cache:clean": "del %appdata%/Temp/react-native-* & cd android & gradlew clean & cd .. & del node_modules/ & npm cache clean --force & npm install & npm start -- --reset-cache"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
