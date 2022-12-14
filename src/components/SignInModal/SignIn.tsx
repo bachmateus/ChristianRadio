@@ -24,7 +24,7 @@ const SignIn:FC<Props> = ({ setUserData }) => {
         setUserData(userData);
 
     } catch (e) {
-      Alert.alert('Something went wrong');
+      Alert.alert('error', JSON.stringify(e));
       console.error(e)
     }
   }
