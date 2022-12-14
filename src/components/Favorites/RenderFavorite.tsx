@@ -1,15 +1,15 @@
 import React from 'react';
-import { Image, Linking, Text, TouchableOpacity, View, ImageBackground } from "react-native"
+import { Image, Linking, Text, TouchableOpacity, View, ImageBackground, StyleProp, ViewStyle } from "react-native"
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Track from "../../modules/station/model/Track"
-import styles from "./styles"
 
 interface RenderFavoriteProps {
   item:Track
   userKey:string
   handleRemoveFromFavorite: (item:Track)=>void
+  styles: any
 } 
 
 const searchLinks = {
@@ -18,7 +18,7 @@ const searchLinks = {
 }
 
 export default function RenderFavorite({
-  item, handleRemoveFromFavorite
+  item, handleRemoveFromFavorite, styles
 }: RenderFavoriteProps) {
 
   const openLink = (url: string) => {
@@ -51,7 +51,7 @@ export default function RenderFavorite({
 
       <View style={{...styles.favoriteBox, ...styles.favoriteExtendedBox}}>
         <TouchableOpacity style={styles.favoriteBoxIconBox} onPress={() => openLink(searchLinks.spotify)}>
-        <MaterialCommunityIcons style={styles.favoriteBoxIcons} name="spotify" size={styles.favoriteBoxIcons.width} color={styles.favoriteBoxIcons.color} />
+          <MaterialCommunityIcons style={styles.favoriteBoxIcons} name="spotify" size={styles.favoriteBoxIcons.width} color={styles.favoriteBoxIcons.color} />
           <Text  style={styles.artist}>Spotify</Text>
         </TouchableOpacity>
 

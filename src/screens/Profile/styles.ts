@@ -11,42 +11,35 @@ const styles = StyleSheet.create({
   
   boxProfile: {
     padding: 20,
-    flexDirection: "row"
+    flexDirection: "row",
+    backgroundColor: 'rgb(32,32,32)'
   },
 
   profileImage: {
-    width: 100, 
-    height: 100,
-    borderRadius: 100,
+    width: 80, 
+    height: 80,
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#fff',
     marginRight: 20
   },
 
-  boxProfileInfo: {
-    justifyContent: "center"
-  },
+  boxProfileInfo: {  },
 
   profileName: {
     color: '#fff',
     fontSize: 22,
-    marginBottom: 20
+    fontWeight: "bold",
+    marginBottom: 10
   },
-  logoutButtonContainer: {
-    backgroundColor: '#07266e',
-    borderColor: 'rgba(255,255,255,0.5)',
-    // borderWidth: 1,
-    borderRadius: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    marginLeft: 5
-  },
+  logoutButtonContainer: {},
   logoutButtonText: {
+    paddingVertical: 5,
     color: '#fff',
     fontSize: 16,
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    textAlign: "center",
+    borderColor: '#d5d5d5',
+    borderBottomWidth: 2,
   },
 });
 
