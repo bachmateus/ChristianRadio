@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
 container: {
   flex: 1,
   backgroundColor: '#fff',
-  // justifyContent: "flex-end"
 },
 containerBackground: {
   width: 1000,
@@ -26,7 +25,8 @@ capa: {
   maxWidth: Dimensions.get('screen').width - 40,
   maxHeight: Dimensions.get('screen').width - 40,
 
-  flex:1,
+  width: '100%',
+  height: '100%',
   shadowColor: "#000",
   shadowOffset: {
     width: 0,
@@ -35,12 +35,9 @@ capa: {
   shadowOpacity: 0.25,
   shadowRadius: 3.84,
 
-  // elevation: 5,
+  elevation: 5,
 },
 
-// radiosList:{
-//   marginTop: 20,
-// },
 radiosContainer: {
   position: "relative",
   alignItems: 'center',
@@ -50,8 +47,6 @@ radiosContainer: {
 },
 
 radiosContainerButton: {
-  // position: 'absolute',
-  // top: -15,
   backgroundColor: '#fff',
   borderRadius: 20,
   padding: 5,
@@ -71,19 +66,9 @@ radioBox: {
   alignItems: 'center',
   position: 'relative',
 },
-// radioBoxTitle: {
-//   fontSize: 28,
-// },
-// radioBoxSpan: {
-//   fontSize: 32
-// },
-
-
 
 radioBoxImgLogoBox: {
-  // position: 'absolute',
   minHeight: 200,
-  // backgroundColor: '#1f2022a6',
   borderRadius: 2,
   padding: 5
 },

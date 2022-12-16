@@ -1,12 +1,11 @@
 import React, { FC } from "react"
-import { Button, Image, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { Button, Image, Text, View, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import Favorites from "../../components/Favorites";
 
 import SignInConect from "../../components/SignInModal/SignIn";
 import { SocialAuthProvider } from "../../modules/user/useCases";
-import signoutWithSocialProvider from "../../modules/user/useCases/signoutUseCases";
+// import signoutWithSocialProvider from "../../modules/user/useCases/signoutUseCases";
 import { AppReducerTypes } from "../../reducers/types";
 import { resetUserData } from "../../reducers/userReducer/actions";
 
@@ -16,14 +15,14 @@ interface Props {
   name:string
   id:string
   photo:string
-  provider: SocialAuthProvider
+  provider: "" | SocialAuthProvider
   resetUserData:Function
 }
 
 const Profile:FC<Props> = ({name, id, photo, provider, resetUserData}) => {
   const handleLogout = () => {
     resetUserData()
-    signoutWithSocialProvider(provider);
+    // signoutWithSocialProvider(provider);
   }
   
   return (

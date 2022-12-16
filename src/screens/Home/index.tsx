@@ -1,173 +1,67 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Image, ImageBackground, Text, View } from "react-native";
-import { connect } from "react-redux";
-import { useNavigation } from '@react-navigation/native';
+import { ActivityIndicator, Image, ImageBackground, ImageSourcePropType, Text, View } from "react-native";
 
-import Station from "../../modules/station/model/Station";
-import Track from "../../modules/station/model/Track";
+// import Station from "../../modules/station/model/Station";
 import getCurrentTrackUseCaseInstance from "../../modules/station/useCases/getCurrentTrack";
-import listAllStationUseCase from "../../modules/station/useCases/listAllStation";
 
 import PlayerTrack from "../../modules/player/model/PlayerTrack";
-import RNTrackPlayerRepository from "../../modules/player/repositories/implementations/RNTrackPlayerRepository";
-
-import toogleMusicFavoriteUseCase from "../../modules/user/useCases/toogleMusicFavoriteUseCase";
 
 import MusicPlayer from "../../components/MusicPlayer";
 import playerStyles from '../../components/MusicPlayer/styles'
 
-import { setStationData } from '../../reducers/stationReducer/actions';
-import { setFavoritesData } from "../../reducers/favoritesReducer/actions";
-import { AppReducerTypes } from "../../reducers/types";
-
+// TODO: alterar a imagem genérica
 import genericAlbumImg from '../../assets/generic-album.png';
 import styles from "./styles";
+import { useCurrentTrack } from "../../modules/player/hooks";
+import { stationsList } from "../../modules/station/databases/playlist-data";
 
-interface Props {
-  userKey: string
-  currentStationSelected: Station
-  favorites: Track[]
-  setStationData: Function
-  setFavoritesData: Function
-}
-
-function HomeConnect({
-  userKey, 
-  currentStationSelected, 
-  favorites,
-  setStationData,
-  setFavoritesData,
-}: Props) {
-
-  const [ isPlaying, setIsPlaying ] = useState(true);
-  const [ isLoadingData, setIsLoadingData ] = useState(false);
-  const [ isTrackFavorite, setIsTrackFavorite ] = useState(false);
-  const navigation = useNavigation();
-
-  const [ stations, setStations ] = useState<Station[]>();
+export default function Home() {
   const [ currentTrack, setCurrentTrack ] = useState({} as PlayerTrack)
-  const [ player ] = useState( new RNTrackPlayerRepository());
-  const interval = useRef<ReturnType<typeof setInterval>>(null);
+  const interval = useRef<ReturnType<typeof setInterval>>();
+  const {index, track} = useCurrentTrack();
 
-
-  const onload = async () => {
-    setIsLoadingData(true);
-    const stations = await listAllStationUseCase.execute();
-    setStations(stations);
-    setStationData(stations![0]);
-    setIsLoadingData(false);
-  }
+  // TODO: implement loading
+  useEffect(()=>{ onStationChange() }, [index])
   
-  const handlePlayButtonPress = async () => {
-    const playerStatus = await player.togglePlay(!isPlaying);
-    setIsPlaying(playerStatus);
-  }
-
   const onStationChange = async () => {
     clearInterval(interval.current);
 
     interval.current = setInterval(() => {
-    getStationData();
+      getStationData();
     }, 1000);
   }
-  
+
   async function getStationData () {
-    // setIsLoadingData(true);
-  
+    const stationData = stationsList[index as number];
     const getCurrentTrack = getCurrentTrackUseCaseInstance();
-    const newCurrentTrack = await getCurrentTrack.execute(currentStationSelected)
-
-    if (favorites.length > 0) {
-      const resCheckIfIsFavorite = favorites.some( 
-        favorite => favorite.SongCode === newCurrentTrack.id
-      );
-
-      setIsTrackFavorite(resCheckIfIsFavorite);
-    } else {
-      setIsTrackFavorite(false);
-    }
-
-    setIsLoadingData(false);
+    const newCurrentTrack = await getCurrentTrack.execute(stationData)
 
     if (newCurrentTrack.id === currentTrack.id) {
       return
     }
-  
-    player.setPlayerData(newCurrentTrack)
-  
     setCurrentTrack(newCurrentTrack)
-    // setIsLoadingData(false);
-  }
-  
-  useEffect(()=>{ onload() },[])
-  useEffect(()=>{ onStationChange() }, [currentStationSelected, favorites])
-
-  const handleFavorite = async () => {
-    setIsLoadingData(true);
-
-    if ( !userKey ) {
-      navigation.navigate('Favorites')      
-      return
-    }
-    
-    const favoriteResponse = await toogleMusicFavoriteUseCase().execute({
-      userKey,
-      music: {
-        Artist: currentTrack.artist,
-        CD: currentTrack.album,
-        CDCover: currentTrack.artwork,
-        SongCode: currentTrack.id,
-        Title: currentTrack.title
-      },
-      favoriteList:favorites
-    });
-    
-
-    if (favoriteResponse.isFavorite) {
-      const newFavorites = [
-        ...favorites,
-        favoriteResponse.data
-      ];
-
-      setFavoritesData(newFavorites);
-    } else {
-      const newFavorites = favorites.filter(
-        fav => fav.id !== favoriteResponse.data.id 
-      );
-
-      setFavoritesData(newFavorites);
-    }
-    
-    setIsLoadingData(false);
   }
 
-  const handlePrevious = () => {
-    setIsLoadingData(true);
-    const index =  (currentStationSelected.id == 1) ? stations.length - 1 : currentStationSelected.id - 2;
-    setStationData(stations[index]);
-  }
-  const handleNext = () => {
-    setIsLoadingData(true);
-    const index = (currentStationSelected.id === stations.length)  ? 0 : currentStationSelected.id
-    setStationData(stations[index]);
-  }
+  const isLoadingData = !(currentTrack.hasOwnProperty('title') && currentTrack.title !== '');
+  const artworkSource = (currentTrack.hasOwnProperty('artwork') && currentTrack.artwork !== '') 
+    ? {uri:currentTrack.artwork}
+    : genericAlbumImg;
+
+  const stationLogo = (!index ? stationsList[0].logo : stationsList[index].logo) as ImageSourcePropType;
 
   return ( 
     <ImageBackground 
       style={styles.container} imageStyle={styles.containerBackground}
       blurRadius={50} 
       resizeMethod="scale" 
-      source={ currentTrack.artwork !== ""
-        ? {uri:currentTrack.artwork}
-        : genericAlbumImg
-      }
+      source={artworkSource}
     >
       <View style={playerStyles.playerMusicInfo}>
         <View>
           <Text style={playerStyles.musicArtistLbl}>
-            You're listening to {currentStationSelected.name}
+            You're listening to {track?.name}
           </Text>
-          <Image resizeMode="contain" source={currentStationSelected.logo} 
+          <Image resizeMode="contain" source={stationLogo} 
             style={{ height: 50, maxWidth: 320}} 
           />
         </View>
@@ -176,40 +70,17 @@ function HomeConnect({
       <View style={styles.capaBox}>
         <Image 
           style={styles.capa} 
-          source={ currentTrack.artwork !== ""
-            ? {uri: currentTrack.artwork}
-            : genericAlbumImg
-          } 
+          source={artworkSource}
         />
       </View>
 
-      <MusicPlayer 
-        track={currentTrack} 
-        isTrackFavorite={isTrackFavorite} 
-        isPlaying={isPlaying} 
-        handleFavorite={handleFavorite}
-        handlePrevious={handlePrevious}
-        handlePlay={handlePlayButtonPress}
-        handleNext={handleNext}
-      />
+      <MusicPlayer track={currentTrack} />
 
-    { isLoadingData && (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator color={'#fff'} size="large" />
-      </View>
-    )}
+      { isLoadingData && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator color={'#fff'} size="large" />
+        </View>
+      )}
     </ImageBackground>
   );
 }
-
-const mapStateToProps = (state: AppReducerTypes) => {
-  return {
-    userKey: state.userReducer.id,
-    currentStationSelected: state.stationReducer,
-    favorites: state.favoritesReducer
-  }
-}
-
-const Home = connect(mapStateToProps, { setStationData, setFavoritesData })(HomeConnect);
-
-export default Home;

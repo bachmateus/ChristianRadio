@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Modal, RefreshControl, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Modal, RefreshControl, Text, TouchableOpacity, View } from "react-native";
 import { connect } from 'react-redux';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Track from '../../modules/station/model/Track';
-import styles from './styles';
+import { gradeStyles, listStyles } from './styles';
 
 import listFavoriteTracksUseCase from '../../modules/user/useCases/listFavoriteTracksUseCase';
 import { AppReducerTypes } from '../../reducers/types';
@@ -21,10 +22,12 @@ interface Props {
 
 function FavoritesConnect({userKey, favorites, setFavoritesData}:Props) {
   const [ isRefreshing, setIsRefreshing ] = useState(false);
-  const [ isRemoving, setIsRemoving ] = useState(true);
+  const [ isRemoving, setIsRemoving ] = useState(false);
+  // const [ isRemoving, setIsRemoving ] = useState(true);
+  const [ isListStyles, setIsListStyles ] = useState(true);
   
   const handleRemoveFromFavorite = async (track: Track) => {
-    setIsRemoving(true);
+    // setIsRemoving(true);
 
     await toogleMusicFavoriteUseCase().execute({
       userKey,
@@ -36,40 +39,56 @@ function FavoritesConnect({userKey, favorites, setFavoritesData}:Props) {
   }
 
   const onload = async () => {
-    setIsRefreshing(true);
+    // setIsRefreshing(true);
 
-    if (!userKey) 
-      return
+    // if (!userKey) 
+      // return
     
     const tracks = await listFavoriteTracksUseCase.execute(userKey);
     setFavoritesData(tracks);
-    setIsRefreshing(false);
-    setIsRemoving(false);
+    // setIsRefreshing(false);
+    // setIsRemoving(false);
   }
 
   useEffect(()=>{
+    // console.log(favorites)
       onload();
   },[])
 
+  const onListStyleChange = () => {
+    setIsListStyles(!isListStyles);
+  }
+
+  const styles = isListStyles ? listStyles : gradeStyles
+  
   return (<>
     <RefreshControl 
       style={styles.container}
       refreshing={isRefreshing}
       onRefresh={onload}
     >
-      <Text style={styles.favoriteTitle}>
-        Favorites
-      </Text>
+      <View style={styles.favoriteTitleContainer}>
+        <Text style={styles.favoriteTitle}>
+          Favorites
+        </Text>
+
+        <TouchableOpacity onPress={onListStyleChange}>
+          <MaterialCommunityIcons style={styles.listIcon} name="format-list-bulleted-square" size={30} color={'#fff'} />
+        </TouchableOpacity>
+      </View>
+
       { (userKey !== "") && (
         <FlatList 
           testID='flatlist-favorites'
           nestedScrollEnabled
+          style={{backgroundColor: '#0c0c0c',}}
           data={favorites}
           ListEmptyComponent={ListEmptyComponent}
           renderItem= {({item}) => 
             <RenderFavorite 
               item={item} 
               userKey={userKey} 
+              styles={styles}
               handleRemoveFromFavorite={handleRemoveFromFavorite}
             />
           }

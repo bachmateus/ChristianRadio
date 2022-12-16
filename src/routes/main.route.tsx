@@ -12,27 +12,30 @@ const{ Navigator, Screen } = createBottomTabNavigator();
 export default function MainRoute() {
   return (
     <Navigator 
-      lazy={false}
       initialRouteName='Now Playing'
-      tabBarOptions={{
-        labelPosition: "beside-icon",
-        tabStyle: {
+      screenOptions={{
+        lazy:false,
+        tabBarLabelPosition: "beside-icon",
+        tabBarStyle: {
           backgroundColor: '#080f1f',
           borderTopWidth:0,
         },
-        activeBackgroundColor: "#fff",
-        activeTintColor: '#fff'
-        
+        // tabBarActiveBackgroundColor: "#fff",
+        tabBarActiveTintColor: '#fff',
+        headerShown: false
       }}
+      // tabBarOptions={{
+        
+      // }}
     >
       
-      <Screen name="Stations" component={Stations} 
+      {/* <Screen name="Stations" component={Stations} 
         options={{
           tabBarIcon: ({color}) => (
             <MaterialIcons name="library-music" size={24} color={color} />
           )
         }}
-      />
+      /> */}
 
 
       <Screen name="Now Playing" component={Home} 
