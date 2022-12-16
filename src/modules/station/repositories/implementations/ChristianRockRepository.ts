@@ -1,11 +1,4 @@
-import { 
-  CRock,
-  CHardRock,
-  CHits,
-  CPpowerPraise,
-  CClassicRock, 
-  ThisIsPower
-} from "../../../../databases/christianRockStation.data";
+import { stationsList } from "../../databases/playlist-data";
 import PlayerTrack from "../../../player/model/PlayerTrack";
 import Station from "../../model/Station";
 import Track from "../../model/Track";
@@ -77,14 +70,7 @@ export default class ChristianRockRepository implements IStationRepository{
   endpoint:string = "iphoneCHRDN.asp?_=1620442597658";
 
   listAll(): Promise<Station[]> {
-    const stations:Station[] = [
-      // ThisIsPower,
-      CRock,
-      CHardRock,
-      CHits,
-      CPpowerPraise,
-      CClassicRock,
-    ];
+    const stations:Station[] = stationsList;
 
     return new Promise((resolve) => {
       resolve(stations)
@@ -107,18 +93,18 @@ export default class ChristianRockRepository implements IStationRepository{
         currentTrack.album = serverResp[stationCode + '_CD'];
         // @ts-ignore
         currentTrack.artwork = this.apiUrl + serverResp[stationCode + '_CDCover'];
-        currentTrack.url = station.url;
+        // currentTrack.url =  station.url;
         currentTrack.id =  md5(`${currentTrack.title} ${currentTrack.artist}`)
     
         return currentTrack;
       }
-
-      currentTrack.url = station.url;
+      // TODO: ver porque tá dando null
+      // currentTrack.url = station.url;
       return currentTrack
 
     } catch (e) {
       const currentTrack = new PlayerTrack();
-      currentTrack.url = station.url;
+      // currentTrack.url = station.url;
       return currentTrack
     }
   }

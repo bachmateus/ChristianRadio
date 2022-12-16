@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "934450097517-3mu806dm3gchihmfvqmiqura0ipo3jo1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.christianradio",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "934450097517-cj10e0j3d0sq2ql83p5r3s0a0lucsbuo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -28,6 +36,43 @@
           "android_info": {
             "package_name": "com.christianradio",
             "certificate_hash": "1ce2a85cb719d5b3613b3a2ec7546c5194098c1d"
+          }
+        },
+        {
+          "client_id": "934450097517-1gcviqajh364o46qbjmtktbtiqqrdrtq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUt8mXTQiT0-KZjeayjjfsjsoA1z7kClw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934450097517-1gcviqajh364o46qbjmtktbtiqqrdrtq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934450097517:android:12b02fa2f243a2a77a7e64",
+        "android_client_info": {
+          "package_name": "com.christianrockradio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934450097517-u8bvf9et3ohas86s2qgs3t65palkbkj1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.christianrockradio",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {

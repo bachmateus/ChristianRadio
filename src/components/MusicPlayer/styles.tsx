@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     flexShrink: 0
   },
 
+  musicInfoBox: {
+    marginRight: 10
+  },
   musicTitleLbl: {
     color: '#fff',
     fontSize: 18,
